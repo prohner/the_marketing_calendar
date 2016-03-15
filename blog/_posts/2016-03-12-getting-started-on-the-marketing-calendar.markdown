@@ -4,7 +4,6 @@ title:  "Getting Started on the Marketing Calendar"
 date:   2016-03-12 22:00:25
 categories: calendar
 permalink: getting-started-on-the-marketing-calendar
-
 ---
 
 In my day job I have heard for years from our internal team that our customers want a marketing calendar.  Since I'm more on the technical side I have always heard that this is a problem.  However I haven't heard much from anyone about what a solution to the _we don't have a marketing calendar_ problem might actually look like.  We also don't have the internal resources to work through the planning and design a project like this.

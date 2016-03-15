@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>The Marketing Calendar Blog</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
+  <title>Setting Up a Blog</title>
+  <meta name="description" content="I knew up front that I wanted to set up a blog to track my work as I develop The Marketing Calendar.  And I wanted to start the blogging process before I eve...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://www.themarketingcalendar.com/blog/">
+  <link rel="canonical" href="http://www.themarketingcalendar.com/blog/setting-up-a-blog">
   <link rel="alternate" type="application/rss+xml" title="The Marketing Calendar Blog" href="http://www.themarketingcalendar.com/blog/feed.xml" />
 </head>
 
@@ -55,39 +54,31 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title">Setting Up a Blog</h1>
+    <p class="post-meta">Mar 15, 2016</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Mar 15, 2016</span>
+  <article class="post-content">
+    <p>I knew up front that I wanted to set up a blog to track my work as I develop The Marketing Calendar.  And I wanted to start the blogging process before I even have an application up and running.  The plan is to write the system based on <a href="http://rubyonrails.org/">Ruby on Rails</a>.  There are more languages involved, specifically <a href="http://coffeescript.org/">CoffeeScript</a>, but the primary platform is Rails.</p>
 
-        <h2>
-          <a class="post-link" href="/blog/setting-up-a-blog">Setting Up a Blog</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 14, 2016</span>
+<p>A lot of the Rails system is oriented around basic reading and writing to/from a database (<a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>).  That means there are frequent changes to the database structure.  I know from experience that during development I often like to reset the database so that it’s completely fresh.  Additionally there’s the possibility of making a mistake that wipes out the database on my development system.</p>
 
-        <h2>
-          <a class="post-link" href="/blog/jekyll/update/2016/03/14/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 12, 2016</span>
+<p>Basically, I don’t trust my local database during early development.</p>
 
-        <h2>
-          <a class="post-link" href="/blog/getting-started-on-the-marketing-calendar">Getting Started on the Marketing Calendar</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>So I didn’t really want to start creating blog entries in a database that I don’t trust.  I wanted to know that if I take some time to write a blog entry then that entry needs to be saved reliably.</p>
 
-  <p class="rss-subscribe">subscribe <a href="/blog/feed.xml">via RSS</a></p>
+<p>In doing a little research I found that creating <a href="https://daringfireball.net/projects/markdown/basics">markdown files</a> is pretty straightforward. Having text files on the hard drive feels like a pretty reliable way to save my blog entries.  In addition to my regular system backups, the markdown files will be included as part of the <a href="https://github.com/">revision control</a>.  And, initially, the files can live anywhere on my hard drive…they don’t have to be part of a “real” application.  I like that!</p>
+
+<p>I’ve also been using the <a href="https://atom.io/">Atom</a> text editor.  And Atom comes, by default, with a markdown preview package built-in.  Hit ctrl+shift+m and you can preview the post while you’re typing the markdown.  I like that!</p>
+
+<p>Additionally <a href="https://jekyllrb.com/">Jekyll</a> can generate your blog as static web pages from your markdown files.  I followed the instructions in this <a href="http://www.sitepoint.com/jekyll-rails/">helpful guide to setting up Jekyll with Rails</a>.  The only issue I had was that the site suggests specifying Jekyll 2.5.3 in your Gemfile.  I was getting an error message: <em>Liquid Exception: Failed to get header.</em>  Eventually I found that the current version of Jekyll is 3.1.2. When I changed my Gemfile then Jekyll generated the site correctly.  I like that!</p>
+
+<p>So now I can write blog posts that will be persistent before I have a real application.  The entries are also included as part of my regular backups and revision control. Those posts aren’t going anywhere.  And I like that!</p>
+
+  </article>
 
 </div>
 

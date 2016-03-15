@@ -6,9 +6,36 @@
 </description>
     <link>http://www.themarketingcalendar.com/blog/</link>
     <atom:link href="http://www.themarketingcalendar.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 15 Mar 2016 06:56:03 -0700</pubDate>
-    <lastBuildDate>Tue, 15 Mar 2016 06:56:03 -0700</lastBuildDate>
+    <pubDate>Tue, 15 Mar 2016 07:47:27 -0700</pubDate>
+    <lastBuildDate>Tue, 15 Mar 2016 07:47:27 -0700</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>Setting Up a Blog</title>
+        <description>&lt;p&gt;I knew up front that I wanted to set up a blog to track my work as I develop The Marketing Calendar.  And I wanted to start the blogging process before I even have an application up and running.  The plan is to write the system based on &lt;a href=&quot;http://rubyonrails.org/&quot;&gt;Ruby on Rails&lt;/a&gt;.  There are more languages involved, specifically &lt;a href=&quot;http://coffeescript.org/&quot;&gt;CoffeeScript&lt;/a&gt;, but the primary platform is Rails.&lt;/p&gt;
+
+&lt;p&gt;A lot of the Rails system is oriented around basic reading and writing to/from a database (&lt;a href=&quot;https://en.wikipedia.org/wiki/Create,_read,_update_and_delete&quot;&gt;CRUD&lt;/a&gt;).  That means there are frequent changes to the database structure.  I know from experience that during development I often like to reset the database so that it’s completely fresh.  Additionally there’s the possibility of making a mistake that wipes out the database on my development system.&lt;/p&gt;
+
+&lt;p&gt;Basically, I don’t trust my local database during early development.&lt;/p&gt;
+
+&lt;p&gt;So I didn’t really want to start creating blog entries in a database that I don’t trust.  I wanted to know that if I take some time to write a blog entry then that entry needs to be saved reliably.&lt;/p&gt;
+
+&lt;p&gt;In doing a little research I found that creating &lt;a href=&quot;https://daringfireball.net/projects/markdown/basics&quot;&gt;markdown files&lt;/a&gt; is pretty straightforward. Having text files on the hard drive feels like a pretty reliable way to save my blog entries.  In addition to my regular system backups, the markdown files will be included as part of the &lt;a href=&quot;https://github.com/&quot;&gt;revision control&lt;/a&gt;.  And, initially, the files can live anywhere on my hard drive…they don’t have to be part of a “real” application.  I like that!&lt;/p&gt;
+
+&lt;p&gt;I’ve also been using the &lt;a href=&quot;https://atom.io/&quot;&gt;Atom&lt;/a&gt; text editor.  And Atom comes, by default, with a markdown preview package built-in.  Hit ctrl+shift+m and you can preview the post while you’re typing the markdown.  I like that!&lt;/p&gt;
+
+&lt;p&gt;Additionally &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; can generate your blog as static web pages from your markdown files.  I followed the instructions in this &lt;a href=&quot;http://www.sitepoint.com/jekyll-rails/&quot;&gt;helpful guide to setting up Jekyll with Rails&lt;/a&gt;.  The only issue I had was that the site suggests specifying Jekyll 2.5.3 in your Gemfile.  I was getting an error message: &lt;em&gt;Liquid Exception: Failed to get header.&lt;/em&gt;  Eventually I found that the current version of Jekyll is 3.1.2. When I changed my Gemfile then Jekyll generated the site correctly.  I like that!&lt;/p&gt;
+
+&lt;p&gt;So now I can write blog posts that will be persistent before I have a real application.  The entries are also included as part of my regular backups and revision control. Those posts aren’t going anywhere.  And I like that!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 15 Mar 2016 05:00:00 -0700</pubDate>
+        <link>http://www.themarketingcalendar.com/blog/setting-up-a-blog</link>
+        <guid isPermaLink="true">http://www.themarketingcalendar.com/blog/setting-up-a-blog</guid>
+        
+        
+        <category>calendar</category>
+        
+      </item>
     
       <item>
         <title>Welcome to Jekyll!</title>
