@@ -47,3 +47,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jekyll', '3.1.2'
 gem 'rouge'
+
+# FullCalendar and Moment go together
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
