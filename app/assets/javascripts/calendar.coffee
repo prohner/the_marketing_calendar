@@ -15,8 +15,8 @@ ready = ->
         right: 'month,basicWeek,basicDay'
       }
       weekNumbers: true
-      loading: (bool) ->
-        if bool
+      loading: (isLoading, view) ->
+        if isLoading
           $('#loading').show()
           $('#reveal-snap-toggle').hide()
         else
@@ -24,22 +24,22 @@ ready = ->
           $('#reveal-snap-toggle').show()
       timeFormat: 'h:mm t{ - h:mm t} '
       dragOpacity: "0.5"
-      # eventSources: [
-      # 	{
-      # 		url: eventsSourceUrl
-      # 		ignoreTimezone: true
-      # 		crossDomain: true
-      # 		jsonp: true
-      # 		error: () ->
-      # 			alert "there was an error while fetching events"
-      # 	}
-      # ]
+      eventSources: [
+      	{
+      		url: 'http://localhost:3000/calendar/events.json'
+      		ignoreTimezone: true
+      		crossDomain: true
+      		jsonp: true
+      		error: () ->
+      			alert "there was an error while fetching events"
+      	}
+      ]
 
       eventRender: (event, element) ->
-        # console.log "Checking '" + event.title + "'" if debugging
-        if hidden_category_groups.indexOf(event.category_group_id) >= 0
-          # console.log "  Event '" + event.title + "' category is hidden" if debugging
-          $(element).hide();
+        console.log "Checking '" + event.title + "'" if debugging
+        # if hidden_category_groups.indexOf(event.category_group_id) >= 0
+        #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
+        #   $(element).hide();
 
       eventAfterRender: (event, element, view) ->
         $(element).attr "id", "event-id-" + event.id
