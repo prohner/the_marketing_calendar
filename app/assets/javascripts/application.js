@@ -16,3 +16,6 @@
 //= require_tree .
 //= require moment
 //= require fullcalendar
+
+//= require tether
+//= require bootstrap-sprockets
