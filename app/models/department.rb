@@ -10,6 +10,6 @@
 #
 
 class Department < ApplicationRecord
-  belongs_to :team_id
+  belongs_to :team
   has_many :users
 end
