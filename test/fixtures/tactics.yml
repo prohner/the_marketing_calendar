@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: tactics
+#
+#  id         :integer          not null, primary key
+#  title      :string
+#  event_id   :integer
+#  channel_id :integer
+#  starts_on  :datetime
+#  ends_on    :datetime
+#  revenue    :decimal(, )
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  event_id: 1
+  starts_on: 2016-03-18 21:56:16
+  ends_on: 2016-03-18 21:56:16
+
+two:
+  title: MyString
+  event_id: 1
+  starts_on: 2016-03-18 21:56:16
+  ends_on: 2016-03-18 21:56:16

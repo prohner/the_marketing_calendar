@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: departments
+#
+#  id              :integer          not null, primary key
+#  department_name :string
+#  team_id         :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  department_name: MyString
+
+two:
+  department_name: MyString
