@@ -37,6 +37,7 @@ ready = ->
 
       eventRender: (event, element) ->
         console.log "Checking '" + event.title + "'" if debugging
+        $(element).addClass(event.cssClass)
         # if hidden_category_groups.indexOf(event.category_group_id) >= 0
         #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
         #   $(element).hide();
