@@ -1,5 +1,6 @@
 class CalendarController < ApplicationController
   def index
+    @channels = Channel.all
   end
 
   def events
