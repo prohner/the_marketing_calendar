@@ -58,7 +58,7 @@ gem 'momentjs-rails'
 
 gem 'bootstrap', '~> 4.0.0.alpha3'
 
-gem 'chosen-rails'
+gem 'select2-rails'
 
 source 'https://rails-assets.org' do   ## Indicated in https://github.com/twbs/bootstrap-rubygem
   gem 'rails-assets-tether', '>= 1.1.0'

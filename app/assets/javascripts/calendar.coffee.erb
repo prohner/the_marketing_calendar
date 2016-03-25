@@ -21,20 +21,27 @@ ready = ->
   d += "
     <tr>
       <td>Channels &nbsp; &nbsp;</td>
-      <td nowrap>"
+      <td nowrap>
+      <select data-placeholder='Select channels'
+          multiple
+          style='width:300px;'
+          id='channel-select'>"
   <%
   s = ""
   Channel.all.each do |channel|
-    s += "<input type='checkbox' value='#{channel.title}'>#{channel.title}"
+    s += "<option id='#{channel.id}'>#{channel.title}</option>"
   end
   %>
-  d += "<%= s %></td>"
+  d += "<%= s %>
+    </select>
+    </td>"
 
   d += "
       </tr>
     </table>
   "
-  $('#calendar-menu-filter').popover {
+
+  popover = $('#calendar-menu-filter').popover {
 			title: title
 			html: true
 			template: '<div class="popover popover-width-control" style="max-width: 1000px!important; xwidth:600px; xheight:350px;"><div class="popover-arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
@@ -42,6 +49,16 @@ ready = ->
 			placement: 'bottom'
 			container: '#calendar'
 		}
+
+  popover.on 'shown.bs.popover', (e) ->
+    console.log 'Setting select2 for popover'
+    $('#channel-select').select2 {
+      theme: "bootstrap"
+    }
+
+  $('#select2-test').select2({
+    theme: "bootstrap"
+});
 
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
