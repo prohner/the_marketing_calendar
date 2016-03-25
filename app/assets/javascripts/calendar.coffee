@@ -5,6 +5,31 @@ debugging = true
 
 ready = ->
   console.log 'executing ready()'
+
+  $('#popover-test').popover { placement: 'bottom' }
+
+  title = "Filter Settings"
+  d = "
+    <table border=0>
+      <tr>
+        <td>View &nbsp; &nbsp;</td>
+        <td nowrap>
+          <input type='radio' value='exec' checked>Executive &nbsp; &nbsp;
+          <input type='radio' value='mgr'>Manager &nbsp; &nbsp;
+          <input type='radio' value='oper'>Operator
+        </td>
+      </tr>
+    </table>
+  "
+  $('#calendar-menu-filter').popover {
+			title: title
+			html: true
+			template: '<div class="popover popover-width-control" style="max-width: 1000px!important; xwidth:600px; xheight:350px;"><div class="popover-arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+			content: d
+			placement: 'bottom'
+			container: '#calendar'
+		}
+
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
     $('#calendar').fullCalendar {
@@ -38,7 +63,7 @@ ready = ->
       eventRender: (event, element) ->
         # console.log "Checking '" + event.title + "'" if debugging
         if event.cssRules != undefined
-          console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
+          # console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
           $('<style>.' + event.cssClass + ' {' + event.cssRules + '}</style>').appendTo('head');
         $(element).addClass event.cssClass
 

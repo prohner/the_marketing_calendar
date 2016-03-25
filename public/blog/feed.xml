@@ -6,9 +6,38 @@
 </description>
     <link>http://www.themarketingcalendar.com/blog/</link>
     <atom:link href="http://www.themarketingcalendar.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 19 Mar 2016 10:00:07 -0700</pubDate>
-    <lastBuildDate>Sat, 19 Mar 2016 10:00:07 -0700</lastBuildDate>
+    <pubDate>Thu, 24 Mar 2016 21:45:45 -0700</pubDate>
+    <lastBuildDate>Thu, 24 Mar 2016 21:45:45 -0700</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>Getting Mired in the Details</title>
+        <description>&lt;p&gt;When starting a project it always feels like I have a very clear vision of what the final product will look like.  The truth is that there are a million little details that are not yet contemplated at the very beginning.&lt;/p&gt;
+
+&lt;p&gt;Who knows…if I knew how many details were involved, would I start the project?&lt;/p&gt;
+
+&lt;p&gt;I’ve been considering some feedback from some mockup screen shots.  Someone pointed out that it is difficult to see, on the calendar, which steps belong to tactics and which tactics belong to events.  And the feedback is good feedback.  It is hard to see how things go together.&lt;/p&gt;
+
+&lt;p&gt;In this initial view you can see that all of the green tactics blend together.  Then the gray steps float around, but don’t seem to be associated with their tactics (all of the steps actually belong to tactics).  The feedback is definitely good.
+&lt;img src=&quot;/assets/calendar_design_screen_shot_1.png&quot; alt=&quot;Initial mockup example&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As a result I’ve been trying to do some color coding of items on the calendar to try to make it clear that the items are associated.  I’m moving toward something that’s a little more reasonable in terms of color schemes.
+&lt;img src=&quot;/assets/calendar_design_screen_shot.png&quot; alt=&quot;Calendar experiment in design&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What might not be immediately obvious is that calendar items don’t “belong” to each other still.  For example from the 1st through the 3rd is the &lt;em&gt;Thu Email&lt;/em&gt; that has a green background.  That tactic owns the “Selections Complete” step on the 1st, the “HTML Complete” step on the 2nd, and the “Deliver” step on the 3rd.  I would like for each of those steps to appear underneath the &lt;em&gt;Thu Email&lt;/em&gt; tactic.  It gets messy.&lt;/p&gt;
+
+&lt;p&gt;I’ve been trying to work through those sorts of details to improve the look.  I’m not sure if this is the best use of my time.  Perhaps I should punt this down the road and figure I’ll hire someone to do a better visual design?  Or maybe I should go ahead and work on this now so I can maake it usable.&lt;/p&gt;
+
+&lt;p&gt;There are so many details to consider and they aren’t apparent at the beginning.  It’s easy to get mired in the details when I should probably be worrying more about getting enough of the site working that someone can actually use it.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 22 Mar 2016 05:00:00 -0700</pubDate>
+        <link>http://www.themarketingcalendar.com/blog/getting-mired-in-the-details</link>
+        <guid isPermaLink="true">http://www.themarketingcalendar.com/blog/getting-mired-in-the-details</guid>
+        
+        
+        <category>calendar</category>
+        
+      </item>
     
       <item>
         <title>Setting Up a Blog</title>
