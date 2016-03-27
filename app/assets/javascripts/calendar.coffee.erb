@@ -9,6 +9,7 @@ filterHiddenDepartments = []
 DBGacceptableValues = ['exec', 'mgr', 'oper']
 
 ready = ->
+
   console.log 'executing ready()'
 
   $('#popover-test').popover { placement: 'bottom' }
@@ -64,10 +65,19 @@ ready = ->
     </table>
   "
 
+  template = '
+    <div class="popover popover-width-control"
+      style="max-width: 1000px!important;
+      xwidth:600px;
+      xheight:350px;
+      "><div class="popover-arrow"></div>
+    <div class="popover-inner"><h3 class="popover-title"></h3>
+    <div class="popover-content"><p></p></div></div></div>'
+
   popover = $('#calendar-menu-filter').popover {
 			title: title
 			html: true
-			template: '<div class="popover popover-width-control" style="max-width: 1000px!important; xwidth:600px; xheight:350px;"><div class="popover-arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+			template: template,
 			content: d
 			placement: 'bottom'
 			container: '#calendar'
