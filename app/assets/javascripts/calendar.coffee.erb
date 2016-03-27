@@ -97,6 +97,9 @@ ready = ->
     $('#channel-select').change ->
       filterChannelsChanged this
 
+    $('#department-select').change ->
+      filterDepartmentsChanged this
+
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
     $('#calendar').fullCalendar {
@@ -138,10 +141,12 @@ ready = ->
             if ['event', 'tactic'].indexOf(event.type) < 0
               elementIsVisible = false
 
-        console.log "channel = " + event.channel + ", hidden = " + filterHiddenChannels + ", index = " + filterHiddenChannels.indexOf[parseInt(event.channel)]
         for hiddenChannel in filterHiddenChannels
           if hiddenChannel == event.channel
-            console.log "Hiding " + event.title
+            elementIsVisible = false
+
+        for hiddenDepartment in filterHiddenDepartments
+          if hiddenDepartment == event.department
             elementIsVisible = false
 
         if elementIsVisible
@@ -187,7 +192,16 @@ ready = ->
   $('#channel-select option:not(:selected)').each (i, selected) ->
     filterHiddenChannels.push parseInt(selected.id)
 
-  # filterHiddenChannels
+  $('#calendar').fullCalendar 'rerenderEvents'
+
+
+@filterDepartmentsChanged = (departmentsDropdown) ->
+  console.log 'filterDepartmentsChanged changed ' + $('#department-select').val() if debugging
+
+  filterHiddenDepartments = []
+  $('#department-select option:not(:selected)').each (i, selected) ->
+    filterHiddenDepartments.push parseInt(selected.id)
+
   $('#calendar').fullCalendar 'rerenderEvents'
 
 $(document).ready(ready);

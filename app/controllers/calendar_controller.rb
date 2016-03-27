@@ -84,7 +84,8 @@ class CalendarController < ApplicationController
         :allDay => true,
         :type => :step,
         :cssClass => "tactic-#{step.tactic.id}",
-        :channel => step.tactic.channel.id
+        :channel => step.tactic.channel.id,
+        :department => step.department.id
       }
     end
 
