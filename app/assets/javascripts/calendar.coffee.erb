@@ -3,8 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 debugging = true
 filterViewLevel = 'oper'
-filter_hidden_channels = []
-filter_hidden_departments = []
+filterHiddenChannels = []
+filterHiddenDepartments = []
 
 DBGacceptableValues = ['exec', 'mgr', 'oper']
 
@@ -94,6 +94,9 @@ ready = ->
     $('input[name=filterViewLevel]:radio').change ->
       filterViewLevelChanged this
 
+    $('#channel-select').change ->
+      filterChannelsChanged this
+
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
     $('#calendar').fullCalendar {
@@ -135,6 +138,12 @@ ready = ->
             if ['event', 'tactic'].indexOf(event.type) < 0
               elementIsVisible = false
 
+        console.log "channel = " + event.channel + ", hidden = " + filterHiddenChannels + ", index = " + filterHiddenChannels.indexOf[parseInt(event.channel)]
+        for hiddenChannel in filterHiddenChannels
+          if hiddenChannel == event.channel
+            console.log "Hiding " + event.title
+            elementIsVisible = false
+
         if elementIsVisible
           if event.cssRules != undefined
             # console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
@@ -164,11 +173,21 @@ ready = ->
 
 @filterViewLevelChanged = (radioButton) ->
   if debugging
-    console.log 'filterViewLevelChanged clicked: ' + radioButton.value
+    console.log 'filterViewLevelChanged changed: ' + radioButton.value
     DBGindexOfValue = DBGacceptableValues.indexOf radioButton.value
     alert 'Invalid argument to filterViewLevelChanged(). ' + radioButton.value + ' is invalid.' if DBGindexOfValue < 0
 
   filterViewLevel = radioButton.value
+  $('#calendar').fullCalendar 'rerenderEvents'
+
+@filterChannelsChanged = (channelsDropdown) ->
+  console.log 'filterChannelsChanged changed ' + $('#channel-select').val() if debugging
+
+  filterHiddenChannels = []
+  $('#channel-select option:not(:selected)').each (i, selected) ->
+    filterHiddenChannels.push parseInt(selected.id)
+
+  # filterHiddenChannels
   $('#calendar').fullCalendar 'rerenderEvents'
 
 $(document).ready(ready);
