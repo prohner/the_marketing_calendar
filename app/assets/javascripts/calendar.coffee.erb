@@ -2,6 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 debugging = true
+filterViewLevel = 'oper'
+filter_hidden_channels = []
+filter_hidden_departments = []
+
+DBGacceptableValues = ['exec', 'mgr', 'oper']
 
 ready = ->
   console.log 'executing ready()'
@@ -14,9 +19,9 @@ ready = ->
       <tr>
         <td>View &nbsp; &nbsp;</td>
         <td nowrap>
-          <input type='radio' value='exec' checked>Executive &nbsp; &nbsp;
-          <input type='radio' value='mgr'>Manager &nbsp; &nbsp;
-          <input type='radio' value='oper'>Operator
+          <input type='radio' name='filterViewLevel' value='exec' checked>Executive &nbsp; &nbsp;
+          <input type='radio' name='filterViewLevel' value='mgr'>Manager &nbsp; &nbsp;
+          <input type='radio' name='filterViewLevel' value='oper'>Operator
         </td>"
   d += "
     <tr>
@@ -29,7 +34,25 @@ ready = ->
   <%
   s = ""
   Channel.all.each do |channel|
-    s += "<option id='#{channel.id}'>#{channel.title}</option>"
+    s += "<option id='#{channel.id}' selected>#{channel.title}</option>"
+  end
+  %>
+  d += "<%= s %>
+    </select>
+    </td>"
+
+  d += "
+    <tr>
+      <td>Departments &nbsp; &nbsp;</td>
+      <td nowrap>
+      <select data-placeholder='Select departments'
+          multiple
+          style='width:300px;'
+          id='department-select'>"
+  <%
+  s = ""
+  Department.all.each do |department|
+    s += "<option id='#{department.id}' selected>#{department.department_name}</option>"
   end
   %>
   d += "<%= s %>
@@ -51,14 +74,25 @@ ready = ->
 		}
 
   popover.on 'shown.bs.popover', (e) ->
-    console.log 'Setting select2 for popover'
     $('#channel-select').select2 {
+      theme: "bootstrap"
+      # ajax: {
+      #     url: 'channels',
+      #     processResults: (data) ->
+      #       console.log "Processing results: "
+      #       console.log " " + data.items
+      #       return {
+      #         results: data.items
+      #       }
+      #   }
+    }
+
+    $('#department-select').select2 {
       theme: "bootstrap"
     }
 
-  $('#select2-test').select2({
-    theme: "bootstrap"
-});
+    $('input[name=filterViewLevel]:radio').change ->
+      filterViewLevelChanged this
 
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
@@ -73,10 +107,8 @@ ready = ->
       loading: (isLoading, view) ->
         if isLoading
           $('#loading').show()
-          $('#reveal-snap-toggle').hide()
         else
           $('#loading').hide()
-          $('#reveal-snap-toggle').show()
       timeFormat: 'h:mm t{ - h:mm t} '
       dragOpacity: "0.5"
       eventSources: [
@@ -92,18 +124,32 @@ ready = ->
 
       eventRender: (event, element) ->
         # console.log "Checking '" + event.title + "'" if debugging
-        if event.cssRules != undefined
-          # console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
-          $('<style>.' + event.cssClass + ' {' + event.cssRules + '}</style>').appendTo('head');
-        $(element).addClass event.cssClass
+        elementIsVisible = true
 
-        if event.type == 'tactic'
-          $(element).css "font-style", "italic"
+        alert 'Invalid argument to eventRender(). ' + filterViewLevel + ' is invalid.' if DBGacceptableValues.indexOf(filterViewLevel) < 0
+        switch filterViewLevel
+          when 'exec'
+            if ['event'].indexOf(event.type) < 0
+              elementIsVisible = false
+          when 'mgr'
+            if ['event', 'tactic'].indexOf(event.type) < 0
+              elementIsVisible = false
 
-        if event.type == 'event'
-          $(element).css "font-weight", "bold"
-          $(element).css "font-style", "italic"
-          event.rendering = 'background'
+        if elementIsVisible
+          if event.cssRules != undefined
+            # console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
+            $('<style>.' + event.cssClass + ' {' + event.cssRules + '}</style>').appendTo('head');
+          $(element).addClass event.cssClass
+
+          if event.type == 'tactic'
+            $(element).css "font-style", "italic"
+
+          if event.type == 'event'
+            $(element).css "font-weight", "bold"
+            $(element).css "font-style", "italic"
+          # $(element).show
+        else
+          $(element).hide()
 
         # if hidden_category_groups.indexOf(event.category_group_id) >= 0
         #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
@@ -115,6 +161,15 @@ ready = ->
       eventClick: (event, jsEvent, view) ->
         console.log event.title + " was clicked" if debugging
     }
+
+@filterViewLevelChanged = (radioButton) ->
+  if debugging
+    console.log 'filterViewLevelChanged clicked: ' + radioButton.value
+    DBGindexOfValue = DBGacceptableValues.indexOf radioButton.value
+    alert 'Invalid argument to filterViewLevelChanged(). ' + radioButton.value + ' is invalid.' if DBGindexOfValue < 0
+
+  filterViewLevel = radioButton.value
+  $('#calendar').fullCalendar 'rerenderEvents'
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

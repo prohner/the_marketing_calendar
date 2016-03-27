@@ -1,6 +1,15 @@
 class CalendarController < ApplicationController
   def index
-    @channels = Channel.all
+  end
+
+  def channels
+    channels = Channel.all.map do |channel|
+      {
+        :id => channel.id,
+        :title => channel.title
+      }
+    end
+    render :json => {items: channels}
   end
 
   def events
