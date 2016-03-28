@@ -1,0 +1,218 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+debugging = true
+filterViewLevel = 'oper'
+filterHiddenChannels = []
+filterHiddenDepartments = []
+
+DBGacceptableValues = ['exec', 'mgr', 'oper']
+
+ready = ->
+
+  console.log 'executing ready()'
+
+  $('#popover-test').popover { placement: 'bottom' }
+
+  title = "Filter Settings"
+  d = "
+    <table border=0>
+      <tr>
+        <td>View &nbsp; &nbsp;</td>
+        <td nowrap>
+          <input type='radio' name='filterViewLevel' id='view-exec' value='exec'><label for='view-exec'>Executive &nbsp; &nbsp;</label>
+          <input type='radio' name='filterViewLevel' id='view-mgr'  value='mgr'><label for='view-mgr'>Manager &nbsp; &nbsp;</label>
+          <input type='radio' name='filterViewLevel' id='view-oper' value='oper' checked><label for='view-oper'>Operator</label>
+        </td>"
+  d += "
+    <tr>
+      <td>Channels &nbsp; &nbsp;</td>
+      <td nowrap>
+      <select data-placeholder='Select channels'
+          multiple
+          style='width:300px;'
+          id='channel-select'>"
+  <%
+  s = ""
+  Channel.all.each do |channel|
+    s += "<option id='#{channel.id}' selected>#{channel.title}</option>"
+  end
+  %>
+  d += "<%= s %>
+    </select>
+    </td>"
+
+  d += "
+    <tr>
+      <td>Departments &nbsp; &nbsp;</td>
+      <td nowrap>
+      <select data-placeholder='Select departments'
+          multiple
+          style='width:300px;'
+          id='department-select'>"
+  <%
+  s = ""
+  Department.all.each do |department|
+    s += "<option id='#{department.id}' selected>#{department.department_name}</option>"
+  end
+  %>
+  d += "<%= s %>
+    </select>
+    </td>"
+
+  d += "
+      </tr>
+    </table>
+  "
+
+  template = '
+    <div class="popover popover-width-control"
+      style="max-width: 1000px!important;
+      xwidth:600px;
+      xheight:350px;
+      "><div class="popover-arrow"></div>
+    <div class="popover-inner"><h3 class="popover-title"></h3>
+    <div class="popover-content"><p></p></div></div></div>'
+
+  popover = $('#calendar-menu-filter').popover {
+			title: title
+			html: true
+			template: template,
+			content: d
+			placement: 'bottom'
+			container: '#calendar'
+		}
+
+  popover.on 'shown.bs.popover', (e) ->
+    $('#channel-select').select2 {
+      theme: "bootstrap"
+      # ajax: {
+      #     url: 'channels',
+      #     processResults: (data) ->
+      #       console.log "Processing results: "
+      #       console.log " " + data.items
+      #       return {
+      #         results: data.items
+      #       }
+      #   }
+    }
+
+    $('#department-select').select2 {
+      theme: "bootstrap"
+    }
+
+    $('input[name=filterViewLevel]:radio').change ->
+      filterViewLevelChanged this
+
+    $('#channel-select').change ->
+      filterChannelsChanged this
+
+    $('#department-select').change ->
+      filterDepartmentsChanged this
+
+  if typeof $('#calendar').fullCalendar != 'undefined'
+    console.log '  loading calendar'
+    $('#calendar').fullCalendar {
+      editable: true
+      header: {
+        left: 'prev,next,today'
+        center: 'title'
+        right: 'month,basicWeek,basicDay'
+      }
+      weekNumbers: true
+      loading: (isLoading, view) ->
+        if isLoading
+          $('#loading').show()
+        else
+          $('#loading').hide()
+      timeFormat: 'h:mm t{ - h:mm t} '
+      dragOpacity: "0.5"
+      eventSources: [
+      	{
+      		url: 'http://localhost:3000/calendar/events.json'
+      		ignoreTimezone: true
+      		crossDomain: true
+      		jsonp: true
+      		error: () ->
+      			alert "there was an error while fetching events"
+      	}
+      ]
+
+      eventRender: (event, element) ->
+        # console.log "Checking '" + event.title + "'" if debugging
+        elementIsVisible = true
+
+        alert 'Invalid argument to eventRender(). ' + filterViewLevel + ' is invalid.' if DBGacceptableValues.indexOf(filterViewLevel) < 0
+        switch filterViewLevel
+          when 'exec'
+            if ['event'].indexOf(event.type) < 0
+              elementIsVisible = false
+          when 'mgr'
+            if ['event', 'tactic'].indexOf(event.type) < 0
+              elementIsVisible = false
+
+        for hiddenChannel in filterHiddenChannels
+          if hiddenChannel == event.channel
+            elementIsVisible = false
+
+        for hiddenDepartment in filterHiddenDepartments
+          if hiddenDepartment == event.department
+            elementIsVisible = false
+
+        if elementIsVisible
+          if event.cssRules != undefined
+            # console.log 'Event type ' + event.type + ' Rules: ' + event.cssRules
+            $('<style>.' + event.cssClass + ' {' + event.cssRules + '}</style>').appendTo('head');
+          $(element).addClass event.cssClass
+
+          if event.type == 'tactic'
+            $(element).css "font-style", "italic"
+
+          if event.type == 'event'
+            $(element).css "font-weight", "bold"
+            $(element).css "font-style", "italic"
+          # $(element).show
+        else
+          $(element).hide()
+
+        # if hidden_category_groups.indexOf(event.category_group_id) >= 0
+        #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
+        #   $(element).hide();
+
+      eventAfterRender: (event, element, view) ->
+        $(element).attr "id", "event-id-" + event.id
+
+      eventClick: (event, jsEvent, view) ->
+        console.log event.title + " was clicked" if debugging
+    }
+
+@filterViewLevelChanged = (radioButton) ->
+  if debugging
+    console.log 'filterViewLevelChanged changed: ' + radioButton.value
+    DBGindexOfValue = DBGacceptableValues.indexOf radioButton.value
+    alert 'Invalid argument to filterViewLevelChanged(). ' + radioButton.value + ' is invalid.' if DBGindexOfValue < 0
+
+  filterViewLevel = radioButton.value
+  $('#calendar').fullCalendar 'rerenderEvents'
+
+@filterChannelsChanged = (channelsDropdown) ->
+  console.log 'filterChannelsChanged changed ' + $('#channel-select').val() if debugging
+
+  filterHiddenChannels = []
+  $('#channel-select option:not(:selected)').each (i, selected) ->
+    filterHiddenChannels.push parseInt(selected.id)
+
+  $('#calendar').fullCalendar 'rerenderEvents'
+
+
+@filterDepartmentsChanged = (departmentsDropdown) ->
+  console.log 'filterDepartmentsChanged changed ' + $('#department-select').val() if debugging
+
+  filterHiddenDepartments = []
+  $('#department-select option:not(:selected)').each (i, selected) ->
+    filterHiddenDepartments.push parseInt(selected.id)
+
+  $('#calendar').fullCalendar 'rerenderEvents'
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

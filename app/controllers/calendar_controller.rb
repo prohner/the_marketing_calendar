@@ -2,6 +2,16 @@ class CalendarController < ApplicationController
   def index
   end
 
+  def channels
+    channels = Channel.all.map do |channel|
+      {
+        :id => channel.id,
+        :title => channel.title
+      }
+    end
+    render :json => {items: channels}
+  end
+
   def events
     colors = [["PaleGoldenrod", "Black", "OrangeRed"],
       ["MistyRose", "Black", "Red"],
@@ -56,28 +66,10 @@ class CalendarController < ApplicationController
         :allDay => true,
         :type => :tactic,
         :cssClass => "tactic-#{tactic.id}",
-        :cssRules => c
+        :cssRules => c,
+        :channel => tactic.channel.id
       }
     end
-
-    # tactic = Tactic.first
-    # tactics =
-    #   [{
-    #     :id => "tactic-#{tactic.id}",
-    #     :title => tactic.title,
-    #     :description => tactic.title,
-    #     :start => tactic.starts_on.noon,
-    #     :realStart => tactic.starts_on.noon,
-    #     :alternateStart => (tactic.ends_on - 1.day),
-    #     :end => tactic.ends_on,
-    #     # :color => "rgb(147,215,147)",
-    #     # :borderColor => "#d1efc4",
-    #     # :textColor => "#3f3f3f",
-    #     :allDay => true,
-    #     :type => :tactic,
-    #     :cssClass => "tactic-#{tactic.id}",
-    #     :cssRules => "border-left-color:#{colors[tactic.id % colors.length]}; border-left-width:thick; color:black;"
-    #   }]
 
     steps = Step.all.map do |step|
       {
@@ -91,7 +83,9 @@ class CalendarController < ApplicationController
         # :textColor => "#3f3f3f",
         :allDay => true,
         :type => :step,
-        :cssClass => "tactic-#{step.tactic.id}"
+        :cssClass => "tactic-#{step.tactic.id}",
+        :channel => step.tactic.channel.id,
+        :department => step.department.id
       }
     end
 
