@@ -66,11 +66,11 @@ namespace :tmc do
     if title == 'auto-generate-email-name'
       title = make_date(y, m, d).strftime('%A')[0..2] + ' Email'
     end
-    em = Tactic.create!(title: title, starts_on: make_date(y, m, d) - 2.days, ends_on: make_date(y, m, d) + 1.day, event: event, channel: @em_channel)
+    em = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 2.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @em_channel)
     steps = Array.new
-    steps << Step.create!(title: "Selections Complete", starts_on: make_date(y, m, d) - 2.days, ends_on: make_date(y, m, d) - 1.day, tactic: em, department: @marketing_dept)
-    steps << Step.create!(title: "HTML Complete", starts_on: make_date(y, m, d) - 1.day, ends_on: make_date(y, m, d), tactic: em, department: @creative_dept)
-    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_date(y, m, d) + 1.day, tactic: em, department: @it_dept)
+    steps << Step.create!(title: "Selections Complete", starts_on: make_time(y, m, d, 12, 0) - 2.days, ends_on: make_time(y, m, d, 12, 0) - 1.day, tactic: em, department: @marketing_dept)
+    steps << Step.create!(title: "HTML Complete", starts_on: make_time(y, m, d, 12, 0) - 1.day, ends_on: make_time(y, m, d, 12, 0), tactic: em, department: @creative_dept)
+    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_time(y, m, d, 12, 0) + 1.day, tactic: em, department: @it_dept)
 
     steps.each do |step|
       if rand(0..2) == 0
@@ -97,10 +97,10 @@ namespace :tmc do
     if title == 'auto-generate-sms-name'
       title = make_date(y, m, d).strftime('%A')[0..2] + ' SMS'
     end
-    sms = Tactic.create!(title: title, starts_on: make_date(y, m, d) - 1.days, ends_on: make_date(y, m, d) + 1.day, event: event, channel: @sms_channel)
+    sms = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @sms_channel)
     steps = Array.new
-    steps << Step.create!(title: "Message Approved", starts_on: make_date(y, m, d) - 1.days, ends_on: make_date(y, m, d), tactic: sms, department: @marketing_dept)
-    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_date(y, m, d) + 1.day, tactic: sms, department: @it_dept)
+    steps << Step.create!(title: "Message Approved", starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0), tactic: sms, department: @marketing_dept)
+    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_time(y, m, d, 12, 0) + 1.day, tactic: sms, department: @it_dept)
 
     steps.each do |step|
       if rand(0..2) == 0
@@ -127,13 +127,13 @@ namespace :tmc do
     if title == 'auto-generate-dm-name'
       title = make_date(y, m, d).strftime('%A')[0..2] + ' SMS'
     end
-    dm = Tactic.create!(title: title, starts_on: make_date(y, m, d) - 1.days, ends_on: make_date(y, m, d) + 1.day, event: event, channel: @dm_channel)
+    dm = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @dm_channel)
     steps = Array.new
-    steps << Step.create!(title: "Art Complete", starts_on: make_date(y, m, d) - 31.day, ends_on: make_date(y, m, d) - 30.days, tactic: dm, department: @creative_dept)
-    steps << Step.create!(title: "Art Approved", starts_on: make_date(y, m, d) - 30.days, ends_on: make_date(y, m, d) - 29.days, tactic: dm, department: @marketing_dept)
-    steps << Step.create!(title: "Selections Complete", starts_on: make_date(y, m, d) - 2.days, ends_on: make_date(y, m, d) - 1.day, tactic: dm, department: @marketing_dept)
-    steps << Step.create!(title: "File to mail house", starts_on: make_date(y, m, d) - 15.days, ends_on: make_date(y, m, d) - 14.days, tactic: dm, department: @marketing_dept)
-    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_date(y, m, d) + 1.day, tactic: dm, department: @it_dept)
+    steps << Step.create!(title: "Art Complete", starts_on: make_time(y, m, d, 12, 0) - 31.day, ends_on: make_time(y, m, d, 12, 0) - 30.days, tactic: dm, department: @creative_dept)
+    steps << Step.create!(title: "Art Approved", starts_on: make_time(y, m, d, 12, 0) - 30.days, ends_on: make_time(y, m, d, 12, 0) - 29.days, tactic: dm, department: @marketing_dept)
+    steps << Step.create!(title: "Selections Complete", starts_on: make_time(y, m, d, 12, 0) - 2.days, ends_on: make_time(y, m, d, 12, 0) - 1.day, tactic: dm, department: @marketing_dept)
+    steps << Step.create!(title: "File to mail house", starts_on: make_time(y, m, d, 12, 0) - 15.days, ends_on: make_time(y, m, d, 12, 0) - 14.days, tactic: dm, department: @marketing_dept)
+    steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_time(y, m, d, 12, 0) + 1.day, tactic: dm, department: @it_dept)
 
     steps.each do |step|
       if rand(0..2) == 0
