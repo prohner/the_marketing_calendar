@@ -132,7 +132,7 @@ namespace :tmc do
     steps << Step.create!(title: "Art Complete", starts_on: make_date(y, m, d) - 31.day, ends_on: make_date(y, m, d) - 30.days, tactic: dm, department: @creative_dept)
     steps << Step.create!(title: "Art Approved", starts_on: make_date(y, m, d) - 30.days, ends_on: make_date(y, m, d) - 29.days, tactic: dm, department: @marketing_dept)
     steps << Step.create!(title: "Selections Complete", starts_on: make_date(y, m, d) - 2.days, ends_on: make_date(y, m, d) - 1.day, tactic: dm, department: @marketing_dept)
-    steps << Step.create!(title: "File to mail house", starts_on: make_date(y, m, d) - 15.days, ends_on: make_date(y, m, d), tactic: dm, department: @marketing_dept)
+    steps << Step.create!(title: "File to mail house", starts_on: make_date(y, m, d) - 15.days, ends_on: make_date(y, m, d) - 14.days, tactic: dm, department: @marketing_dept)
     steps << Step.create!(title: "Deliver", starts_on: make_time(y, m, d, 12, 0), ends_on: make_date(y, m, d) + 1.day, tactic: dm, department: @it_dept)
 
     steps.each do |step|
