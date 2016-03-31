@@ -179,6 +179,17 @@ ready = ->
         #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
         #   $(element).hide();
 
+      eventOrder: (event1, event2) ->
+        console.log 'Sort ' + event1.title + ' (' + event1.start + ') and ' + event2.title + ' (' + event1.start + ')'
+        if event1.type == 'event' and event2.type in ['tactic', 'step']
+          return 1
+        if event1.type == 'tactic' and event2.type == 'step'
+          return 1
+        if event1.title > event2.title
+          return 1
+        else
+          return -1
+
       eventAfterRender: (event, element, view) ->
         $(element).attr "id", "event-id-" + event.id
 

@@ -18,7 +18,7 @@ class CalendarController < ApplicationController
       ["LightCyan", "Black", "Green"],
       ["PapayaWhip", "Black", "Salmon"],
       ["PowderBlue", "Black", "RoyalBlue"],
-      ["Tan", "Black", "Teal"],
+      ["FloralWhite", "Black", "Teal"],
       ["Linen", "Black", "PowderBlue"],
       ["HoneyDew", "Black", "Gainsboro"],
       ["CornSilk", "Black", "Coral"],
