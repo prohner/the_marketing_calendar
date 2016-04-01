@@ -56,7 +56,7 @@ class CalendarController < ApplicationController
         :id => "tactic-#{tactic.id}",
         :title => "#{tactic.title}",
         :description => tactic.title,
-        :start => tactic.starts_on.noon,
+        :start => (tactic.starts_on.noon - 11.hours),
         :realStart => tactic.starts_on.noon,
         :alternateStart => (tactic.ends_on - 1.day),
         :end => tactic.ends_on,
@@ -85,7 +85,8 @@ class CalendarController < ApplicationController
         :type => :step,
         :cssClass => "tactic-#{step.tactic.id}",
         :channel => step.tactic.channel.id,
-        :department => step.department.id
+        :department => step.department.id,
+        :tacticStart => step.tactic.starts_on
       }
     end
 

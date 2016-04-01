@@ -180,6 +180,7 @@ ready = ->
         #   $(element).hide();
 
       eventOrder: (event1, event2) ->
+        # More about controlling sort: https://github.com/fullcalendar/fullcalendar/issues/2907
         console.log 'Sort ' + event1.title + ' (' + event1.start + ') and ' + event2.title + ' (' + event1.start + ')'
         if event1.type == 'event' and event2.type in ['tactic', 'step']
           return 1
