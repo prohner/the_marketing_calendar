@@ -125,7 +125,7 @@ ready = ->
           $('#loading').show()
         else
           $('#loading').hide()
-      timeFormat: 'h:mm t{ - h:mm t} '
+      timeFormat: '  '
       dragOpacity: "0.5"
       eventSources: [
       	{
@@ -207,6 +207,15 @@ ready = ->
     alert 'Invalid argument to filterViewLevelChanged(). ' + radioButton.value + ' is invalid.' if DBGindexOfValue < 0
 
   filterViewLevel = radioButton.value
+  events = $('#calendar').fullCalendar('clientEvents')
+  for event in events
+    if event.type == 'tactic'
+      console.log event.title
+      if filterViewLevel in ['exec', 'mgr']
+        event.start = moment(event.alternateStart).startOf('day')
+      else
+        event.start = moment(event.realStart).startOf('day')
+
   $('#calendar').fullCalendar 'rerenderEvents'
 
 @filterChannelsChanged = (channelsDropdown) ->
