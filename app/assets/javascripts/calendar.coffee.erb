@@ -140,6 +140,7 @@ ready = ->
 
       eventRender: (event, element) ->
         # console.log "Checking '" + event.title + "'" if debugging
+        # console.log "channels: " + filterHiddenChannels
         elementIsVisible = true
 
         alert 'Invalid argument to eventRender(). ' + filterViewLevel + ' is invalid.' if DBGacceptableValues.indexOf(filterViewLevel) < 0
@@ -154,6 +155,7 @@ ready = ->
         for hiddenChannel in filterHiddenChannels
           if hiddenChannel == event.channel
             elementIsVisible = false
+            # console.log 'hide ' + event.title
 
         for hiddenDepartment in filterHiddenDepartments
           if hiddenDepartment == event.department
