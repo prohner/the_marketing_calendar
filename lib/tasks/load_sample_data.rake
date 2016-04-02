@@ -33,9 +33,9 @@ namespace :tmc do
     @users << User.create!(email: 'other1@themarketingcalendar.com', first_name: 'Joe', last_name: 'Swanson', department: @marketing_dept)
     @users << User.create!(email: 'other1@themarketingcalendar.com', first_name: 'Bob', last_name: 'Johnson', department: @creative_dept)
 
-    current_year = 2016
-    current_month = 3
-    last_day_of_month = 31
+    current_year = Date.today.strftime("%Y").to_i
+    current_month = Date.today.strftime("%m").to_i
+    last_day_of_month = Date.new(current_year, current_month, -1).day
 
     event1 = Event.create!(title: "Major Holiday Event", starts_on: make_date(current_year, current_month, 10), ends_on: make_date(current_year, current_month, 17))
     create_email(event1, "auto-generate-email-name", current_year, current_month, 10)
