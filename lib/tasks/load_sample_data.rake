@@ -14,11 +14,11 @@ namespace :tmc do
     Channel.delete_all
     Event.delete_all
 
-    @em_channel = Channel.create!(title: 'Email')
-    @dm_channel = Channel.create!(title: 'Direct mail')
-    @sms_channel = Channel.create!(title: 'SMS')
-    @web_channel = Channel.create!(title: 'Web')
-    @social_channel = Channel.create!(title: 'Social')
+    @em_channel = Channel.create!(title: 'Email', icon: 'icon_email.png')
+    @dm_channel = Channel.create!(title: 'Direct mail', icon: 'icon_direct_mail.gif')
+    @sms_channel = Channel.create!(title: 'SMS', icon: 'icon_sms.png')
+    @web_channel = Channel.create!(title: 'Web', icon: 'icon_web.png')
+    @social_channel = Channel.create!(title: 'Social', icon: 'icon_social.png')
 
     tmc_team = Team.create!(team_name: 'The Marketing Calendar')
     other_team = Team.create!(team_name: 'NOT The Marketing Calendar')

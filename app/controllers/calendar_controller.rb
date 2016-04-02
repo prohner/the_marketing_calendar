@@ -45,12 +45,17 @@ class CalendarController < ApplicationController
       bg = colors[tactic.id % colors.length][0]
       fg = colors[tactic.id % colors.length][1]
       border = colors[tactic.id % colors.length][2]
+      bg_img = ActionController::Base.helpers.asset_path(tactic.channel.icon)
 
-      c = "background-color:#{bg} !important; "\
-          "border-color:lightgray !important; "\
-          "border-left-color:#{border} !important; "\
-          "border-left-width:thick !important; "\
-          "color:#{fg};"
+      c = "border-color:lightgray !important; "\
+          "xborder-left-color:#{border} !important; "\
+          "xborder-left-width:thick !important; "\
+          "color:#{fg};"\
+          "background-color:#{bg}!important;"\
+          "background-image:url(\"#{bg_img}\") !important;"\
+          "background-repeat:no-repeat !important;"\
+          "background-position:left;"\
+          "padding-left:17px;"
 
       {
         :id => "tactic-#{tactic.id}",
