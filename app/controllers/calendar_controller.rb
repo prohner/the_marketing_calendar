@@ -40,6 +40,7 @@ class CalendarController < ApplicationController
         :type => :event
       }
     end
+    events = []
 
     tactics = Tactic.all.map do |tactic|
       bg = colors[tactic.id % colors.length][0]
