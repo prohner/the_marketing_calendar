@@ -106,6 +106,13 @@ ready = ->
       #       }
       #   }
     }
+    if filterViewLevel == 'exec'
+      $("#view-exec").prop("checked", true)
+    if filterViewLevel == 'mgr'
+      $("#view-mgr").prop("checked", true)
+    if filterViewLevel == 'oper'
+      $("#view-oper").prop("checked", true)
+
 
     $('#department-select').select2 {
       theme: "bootstrap"
