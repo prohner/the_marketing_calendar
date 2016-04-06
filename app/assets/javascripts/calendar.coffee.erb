@@ -5,6 +5,8 @@ debugging = true
 filterViewLevel = 'oper'
 filterHiddenChannels = []
 filterHiddenDepartments = []
+popover = null
+popoverThatIsCurrentlyShowing = null
 
 DBGacceptableValues = ['exec', 'mgr', 'oper']
 
@@ -15,14 +17,21 @@ ready = ->
     $('#calendar-menu-filter').each ->
         # //the 'is' for buttons that trigger popups
         # //the 'has' for icons within a button that triggers a popup
+        if $('#calendar-menu-filter').is(e.target)
+          if popoverThatIsCurrentlyShowing == null
+            $(this).popover 'show'
+            popoverThatIsCurrentlyShowing = this
+          else
+            $(this).popover 'hide'
+            popoverThatIsCurrentlyShowing = null
+
         if (!$(this).is(e.target) &&
           $(this).has(e.target).length == 0 &&
           $('.popover').has(e.target).length == 0 &&
           e.target.className != 'select2-selection__choice__remove'
           )
             $(this).popover('hide');
-
-  $('#popover-test').popover { placement: 'bottom' }
+            popoverThatIsCurrentlyShowing = null
 
   title = "Filter Settings"
   d = "
@@ -87,11 +96,29 @@ ready = ->
   popover = $('#calendar-menu-filter').popover {
 			title: title
 			html: true
-			template: template,
+			template: template
 			content: d
 			placement: 'bottom'
 			container: '#calendar'
+			trigger: 'manual'
 		}
+
+  popover.on 'hidden.bs.popover', (e) ->
+    console.log 'hidden.bs.popover'
+    e.preventDefault()
+    # $(popoverThatIsCurrentlyShowing).popover('hide')
+    # title = "hi"
+    # template = "template"
+    # d = "whatever"
+    # $(popoverThatIsCurrentlyShowing).popover {
+  	# 		title: title
+  	# 		html: true
+  	# 		template: template
+  	# 		content: d
+  	# 		placement: 'bottom'
+  	# 		container: '#calendar'
+  	# 	}
+		# popoverThatIsCurrentlyShowing = null
 
   popover.on 'shown.bs.popover', (e) ->
     $('#channel-select').select2 {
@@ -126,6 +153,16 @@ ready = ->
 
     $('#department-select').change ->
       filterDepartmentsChanged this
+
+    $('#channel-select > option').each (i, selected) ->
+      # console.log 'i=' + i + ', selected=' + selected + ', hidden=' + filterHiddenChannels + ', indexOf=' + filterHiddenChannels.indexOf(selected.id)
+      isSelected = true
+      for hiddenChannel in filterHiddenChannels
+        if hiddenChannel == parseInt(selected.id)
+          isSelected = false
+          break
+      $('#channel-select option:eq(' + i + ')').prop('selected', isSelected)
+    console.log ''
 
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
@@ -172,7 +209,7 @@ ready = ->
         for hiddenChannel in filterHiddenChannels
           if hiddenChannel == event.channel
             elementIsVisible = false
-            console.log 'hide ' + event.title
+            # console.log 'hide ' + event.title
 
         for hiddenDepartment in filterHiddenDepartments
           if hiddenDepartment == event.department
