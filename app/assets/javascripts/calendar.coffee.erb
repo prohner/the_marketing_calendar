@@ -7,6 +7,7 @@ filterHiddenChannels = []
 filterHiddenDepartments = []
 popover = null
 popoverThatIsCurrentlyShowing = null
+loadingPopover = false
 
 DBGacceptableValues = ['exec', 'mgr', 'oper']
 
@@ -50,11 +51,12 @@ ready = ->
       <select data-placeholder='Select channels'
           multiple
           style='width:300px;'
+          name='channel-select'
           id='channel-select'>"
   <%
   s = ""
   Channel.all.each do |channel|
-    s += "<option id='#{channel.id}' selected>#{channel.title}</option>"
+    s += "<option id='#{channel.id}' >#{channel.title}</option>"
   end
   %>
   d += "<%= s %>
@@ -106,32 +108,13 @@ ready = ->
   popover.on 'hidden.bs.popover', (e) ->
     console.log 'hidden.bs.popover'
     e.preventDefault()
-    # $(popoverThatIsCurrentlyShowing).popover('hide')
-    # title = "hi"
-    # template = "template"
-    # d = "whatever"
-    # $(popoverThatIsCurrentlyShowing).popover {
-  	# 		title: title
-  	# 		html: true
-  	# 		template: template
-  	# 		content: d
-  	# 		placement: 'bottom'
-  	# 		container: '#calendar'
-  	# 	}
-		# popoverThatIsCurrentlyShowing = null
+
+  popover.on 'show.bs.popover', (e) ->
+    loadingPopover = true
 
   popover.on 'shown.bs.popover', (e) ->
     $('#channel-select').select2 {
       theme: "bootstrap"
-      # ajax: {
-      #     url: 'channels',
-      #     processResults: (data) ->
-      #       console.log "Processing results: "
-      #       console.log " " + data.items
-      #       return {
-      #         results: data.items
-      #       }
-      #   }
     }
     if filterViewLevel == 'exec'
       $("#view-exec").prop("checked", true)
@@ -139,7 +122,6 @@ ready = ->
       $("#view-mgr").prop("checked", true)
     if filterViewLevel == 'oper'
       $("#view-oper").prop("checked", true)
-
 
     $('#department-select').select2 {
       theme: "bootstrap"
@@ -155,14 +137,23 @@ ready = ->
       filterDepartmentsChanged this
 
     $('#channel-select > option').each (i, selected) ->
-      # console.log 'i=' + i + ', selected=' + selected + ', hidden=' + filterHiddenChannels + ', indexOf=' + filterHiddenChannels.indexOf(selected.id)
-      isSelected = true
+      console.log 'i=' + i + ', selected=' + selected + ', hidden=' + filterHiddenChannels + ', indexOf=' + filterHiddenChannels.indexOf(selected.id)
+      selected.selected = true
       for hiddenChannel in filterHiddenChannels
         if hiddenChannel == parseInt(selected.id)
-          isSelected = false
+          selected.selected = false
           break
-      $('#channel-select option:eq(' + i + ')').prop('selected', isSelected)
+
+      # sel = '#channel-select option[value="' + selected.id + '"]'
+      # console.log '   ' + sel + ', isSelected = ' + isSelected
+      # el = $('#channel-select')
+      # # if isSelected
+      # # el.select2('val', '247')
+      # x = $('#channel-select option:eq(247)')
+      # x.prop('selected', true)
     console.log ''
+    loadingPopover = false
+
 
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
@@ -273,6 +264,9 @@ ready = ->
 
 @filterChannelsChanged = (channelsDropdown) ->
   console.log 'filterChannelsChanged changed ' + $('#channel-select').val() if debugging
+  if loadingPopover
+    console.log 'filterChannelsChanged returning because popover is loading' if debugging
+    return
 
   filterHiddenChannels = []
   $('#channel-select option:not(:selected)').each (i, selected) ->
@@ -283,6 +277,9 @@ ready = ->
 
 @filterDepartmentsChanged = (departmentsDropdown) ->
   console.log 'filterDepartmentsChanged changed ' + $('#department-select').val() if debugging
+  if loadingPopover
+    console.log 'filterDepartmentsChanged returning because popover is loading' if debugging
+    return
 
   filterHiddenDepartments = []
   $('#department-select option:not(:selected)').each (i, selected) ->
