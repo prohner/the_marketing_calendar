@@ -113,9 +113,28 @@ ready = ->
     loadingPopover = true
 
   popover.on 'shown.bs.popover', (e) ->
+    # opt = $('#channel-select option:eq(1)')#'[value="247"]')
+    # idx = $('#channel-select option[value=247]').index('option')
+    # console.log 'index of 247 is ' + idx
+    # opt = $('#channel-select option[value="247"]')
+    # opt.prop('selected', true)
+
+    $('#channel-select > option').each (i, selected) ->
+      console.log 'i=' + i + ', selected=' + selected + ', hidden=' + filterHiddenChannels + ', indexOf=' + filterHiddenChannels.indexOf(selected.id)
+      optionIsSelected = true
+      for hiddenChannel in filterHiddenChannels
+        if hiddenChannel == parseInt(selected.id)
+          optionIsSelected = false
+          break
+      opt = $('#channel-select option:eq(' + i + ')')
+      opt.prop('selected', optionIsSelected)
+
     $('#channel-select').select2 {
       theme: "bootstrap"
     }
+
+    # $('#channel-select').select2 'data', selectedChannels
+
     if filterViewLevel == 'exec'
       $("#view-exec").prop("checked", true)
     if filterViewLevel == 'mgr'
@@ -136,13 +155,9 @@ ready = ->
     $('#department-select').change ->
       filterDepartmentsChanged this
 
-    $('#channel-select > option').each (i, selected) ->
-      console.log 'i=' + i + ', selected=' + selected + ', hidden=' + filterHiddenChannels + ', indexOf=' + filterHiddenChannels.indexOf(selected.id)
-      selected.selected = true
-      for hiddenChannel in filterHiddenChannels
-        if hiddenChannel == parseInt(selected.id)
-          selected.selected = false
-          break
+      # idx = $('#channel-select option[value=247]').index('option')
+      # console.log 'index of 247 is ' + idx
+      # opt = $('#channel-select option[value="247"]')
 
       # sel = '#channel-select option[value="' + selected.id + '"]'
       # console.log '   ' + sel + ', isSelected = ' + isSelected
