@@ -25,23 +25,6 @@ class CalendarController < ApplicationController
       ["AliceBlue", "Black", "Aqua"],
     ]
 
-    events = Event.all.map do |event|
-      {
-        :id => "event-#{event.id}",
-        :title => event.title,
-        :description => event.title,
-        :tooltip => "#{event.title} tooltip",
-        :start => event.starts_on,
-        :end => event.ends_on,
-        :color => "#C7D8F7",
-        :borderColor => "#B7C8E7",
-        :textColor => "#3f3f3f",
-        :allDay => true,
-        :type => :event
-      }
-    end
-    events = []
-
     tactics = Tactic.all.map do |tactic|
       bg = colors[tactic.id % colors.length][0]
       fg = colors[tactic.id % colors.length][1]
@@ -96,6 +79,6 @@ class CalendarController < ApplicationController
       }
     end
 
-    render :json => (events + tactics + steps)
+    render :json => (tactics + steps)
   end
 end
