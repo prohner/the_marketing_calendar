@@ -38,13 +38,21 @@ namespace :tmc do
     last_day_of_month = Date.new(current_year, current_month, -1).day
 
     event1 = Event.create!(title: "Major Holiday Event", starts_on: make_date(current_year, current_month, 10), ends_on: make_date(current_year, current_month, 17))
-    create_email(event1, "auto-generate-email-name", current_year, current_month, 10)
-    create_email(event1, "auto-generate-email-name", current_year, current_month, 12)
-    create_email(event1, "auto-generate-email-name", current_year, current_month, 14)
-    create_dm(   event1, "auto-generate-dm-name",    current_year, current_month, 14)
-    create_email(event1, "auto-generate-email-name", current_year, current_month, 15)
-    create_sms(  event1, "auto-generate-sms-name",   current_year, current_month, 15)
-    create_email(event1, "Extended Email", current_year, current_month, 16)
+    create_email( event1, "auto-generate-email-name", current_year, current_month, 10)
+    create_email( event1, "auto-generate-email-name", current_year, current_month, 12)
+    create_email( event1, "auto-generate-email-name", current_year, current_month, 14)
+    create_dm(    event1, "auto-generate-dm-name",    current_year, current_month, 14)
+    create_email( event1, "auto-generate-email-name", current_year, current_month, 15)
+    create_sms(   event1, "auto-generate-sms-name",   current_year, current_month, 15)
+    create_email( event1, "Extended Email",           current_year, current_month, 16)
+
+    create_web(   event1, "auto-generate-web-name",   current_year, current_month,  7)
+    create_web(   event1, "auto-generate-web-name",   current_year, current_month, 14)
+    create_web(   event1, "auto-generate-web-name",   current_year, current_month, 21)
+
+    create_social(event1, "auto-generate-social-name",current_year, current_month, 11)
+    create_social(event1, "auto-generate-social-name",current_year, current_month, 18)
+    create_social(event1, "auto-generate-social-name",current_year, current_month, 25)
 
     event2 = Event.create!(title: "Emailings for Month", starts_on: make_date(current_year, current_month, 1), ends_on: make_date(current_year, current_month, 29))
     create_dm(   event2, "auto-generate-dm-name",    current_year, current_month, 1)
@@ -125,7 +133,7 @@ namespace :tmc do
 
   def create_dm(event, title, y, m, d)
     if title == 'auto-generate-dm-name'
-      title = make_date(y, m, d).strftime('%A')[0..2] + ' SMS'
+      title = make_date(y, m, d).strftime('%A')[0..2] + ' DM'
     end
     dm = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @dm_channel)
     steps = Array.new
@@ -152,6 +160,52 @@ namespace :tmc do
 
       if rand(0..2) == 0
         FollowedTactic.create!(tactic: dm, user: @users[rand(0..(@users.length - 1))])
+      end
+    end
+  end
+
+  def create_web(event, title, y, m, d)
+    if title == 'auto-generate-web-name'
+      title = make_date(y, m, d).strftime('%A')[0..2] + ' Web'
+    end
+    web = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @web_channel)
+    steps = Array.new
+    steps << Step.create!(title: "Art Complete", starts_on: make_time(y, m, d, 12, 0) - 1.day, ends_on: make_time(y, m, d, 12, 0), tactic: web, department: @creative_dept)
+    steps << Step.create!(title: "Published", starts_on: make_time(y, m, d, 12, 0), ends_on: make_time(y, m, d, 12, 0) + 1.day, tactic: web, department: @it_dept)
+
+    add_comments_to_steps_and_tactic(web)
+  end
+
+  def create_social(event, title, y, m, d)
+    if title == 'auto-generate-social-name'
+      title = make_date(y, m, d).strftime('%A')[0..2] + ' Social'
+    end
+    social = Tactic.create!(title: title, starts_on: make_time(y, m, d, 12, 0) - 1.days, ends_on: make_time(y, m, d, 12, 0) + 1.day, event: event, channel: @social_channel)
+    steps = Array.new
+    steps << Step.create!(title: "Copy Complete", starts_on: make_time(y, m, d, 12, 0) - 1.day, ends_on: make_time(y, m, d, 12, 0), tactic: social, department: @creative_dept)
+    steps << Step.create!(title: "Published", starts_on: make_time(y, m, d, 12, 0), ends_on: make_time(y, m, d, 12, 0) + 1.day, tactic: social, department: @it_dept)
+
+    add_comments_to_steps_and_tactic(social)
+  end
+
+  def add_comments_to_steps_and_tactic(tactic)
+    tactic.steps.each do |step|
+      if rand(0..2) == 0
+        StepComment.create!(comment: 'Someone commented on this step.', step: step, user: @users[rand(0..(@users.length - 1))])
+      end
+
+      if rand(0..2) == 0
+        FollowedStep.create!(step: step, user: @users[rand(0..(@users.length - 1))])
+      end
+    end
+
+    4.times do |i|
+      if rand(0..2) == 0
+        TacticComment.create!(comment: "Comment #{i} on this tactic.", tactic: tactic, user: @users[rand(0..(@users.length - 1))])
+      end
+
+      if rand(0..2) == 0
+        FollowedTactic.create!(tactic: tactic, user: @users[rand(0..(@users.length - 1))])
       end
     end
   end

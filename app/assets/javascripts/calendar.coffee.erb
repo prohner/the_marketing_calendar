@@ -5,14 +5,34 @@ debugging = true
 filterViewLevel = 'oper'
 filterHiddenChannels = []
 filterHiddenDepartments = []
+popover = null
+popoverThatIsCurrentlyShowing = null
+loadingPopover = false
 
 DBGacceptableValues = ['exec', 'mgr', 'oper']
 
 ready = ->
-
   console.log 'executing ready()'
 
-  $('#popover-test').popover { placement: 'bottom' }
+  $('body').on 'click', (e) ->
+    $('#calendar-menu-filter').each ->
+        # //the 'is' for buttons that trigger popups
+        # //the 'has' for icons within a button that triggers a popup
+        if $('#calendar-menu-filter').is(e.target)
+          if popoverThatIsCurrentlyShowing == null
+            $(this).popover 'show'
+            popoverThatIsCurrentlyShowing = this
+          else
+            $(this).popover 'hide'
+            popoverThatIsCurrentlyShowing = null
+
+        if (!$(this).is(e.target) &&
+          $(this).has(e.target).length == 0 &&
+          $('.popover').has(e.target).length == 0 &&
+          e.target.className != 'select2-selection__choice__remove'
+          )
+            $(this).popover('hide');
+            popoverThatIsCurrentlyShowing = null
 
   title = "Filter Settings"
   d = "
@@ -20,7 +40,6 @@ ready = ->
       <tr>
         <td>View &nbsp; &nbsp;</td>
         <td nowrap>
-          <input type='radio' name='filterViewLevel' id='view-exec' value='exec'><label for='view-exec'>Executive &nbsp; &nbsp;</label>
           <input type='radio' name='filterViewLevel' id='view-mgr'  value='mgr'><label for='view-mgr'>Manager &nbsp; &nbsp;</label>
           <input type='radio' name='filterViewLevel' id='view-oper' value='oper' checked><label for='view-oper'>Operator</label>
         </td>"
@@ -31,11 +50,12 @@ ready = ->
       <select data-placeholder='Select channels'
           multiple
           style='width:300px;'
+          name='channel-select'
           id='channel-select'>"
   <%
   s = ""
   Channel.all.each do |channel|
-    s += "<option id='#{channel.id}' selected>#{channel.title}</option>"
+    s += "<option id='#{channel.id}' >#{channel.title}</option>"
   end
   %>
   d += "<%= s %>
@@ -77,25 +97,47 @@ ready = ->
   popover = $('#calendar-menu-filter').popover {
 			title: title
 			html: true
-			template: template,
+			template: template
 			content: d
 			placement: 'bottom'
 			container: '#calendar'
+			trigger: 'manual'
 		}
 
+  popover.on 'hidden.bs.popover', (e) ->
+    console.log 'hidden.bs.popover'
+    e.preventDefault()
+
+  popover.on 'show.bs.popover', (e) ->
+    loadingPopover = true
+
   popover.on 'shown.bs.popover', (e) ->
+    if filterViewLevel == 'exec'
+      $("#view-exec").prop("checked", true)
+    if filterViewLevel == 'mgr'
+      $("#view-mgr").prop("checked", true)
+    if filterViewLevel == 'oper'
+      $("#view-oper").prop("checked", true)
+
+    $('#channel-select > option').each (i, selected) ->
+      optionIsSelected = true
+      for hiddenChannel in filterHiddenChannels
+        if hiddenChannel == parseInt(selected.id)
+          optionIsSelected = false
+          break
+      $('#channel-select option:eq(' + i + ')').prop('selected', optionIsSelected)
+
     $('#channel-select').select2 {
       theme: "bootstrap"
-      # ajax: {
-      #     url: 'channels',
-      #     processResults: (data) ->
-      #       console.log "Processing results: "
-      #       console.log " " + data.items
-      #       return {
-      #         results: data.items
-      #       }
-      #   }
     }
+
+    $('#department-select > option').each (i, selected) ->
+      optionIsSelected = true
+      for hiddenDepartment in filterHiddenDepartments
+        if hiddenDepartment == parseInt(selected.id)
+          optionIsSelected = false
+          break
+      $('#department-select option:eq(' + i + ')').prop('selected', optionIsSelected)
 
     $('#department-select').select2 {
       theme: "bootstrap"
@@ -109,6 +151,21 @@ ready = ->
 
     $('#department-select').change ->
       filterDepartmentsChanged this
+
+      # idx = $('#channel-select option[value=247]').index('option')
+      # console.log 'index of 247 is ' + idx
+      # opt = $('#channel-select option[value="247"]')
+
+      # sel = '#channel-select option[value="' + selected.id + '"]'
+      # console.log '   ' + sel + ', isSelected = ' + isSelected
+      # el = $('#channel-select')
+      # # if isSelected
+      # # el.select2('val', '247')
+      # x = $('#channel-select option:eq(247)')
+      # x.prop('selected', true)
+    console.log ''
+    loadingPopover = false
+
 
   if typeof $('#calendar').fullCalendar != 'undefined'
     console.log '  loading calendar'
@@ -125,7 +182,7 @@ ready = ->
           $('#loading').show()
         else
           $('#loading').hide()
-      timeFormat: 'h:mm t{ - h:mm t} '
+      timeFormat: '  '
       dragOpacity: "0.5"
       eventSources: [
       	{
@@ -140,6 +197,7 @@ ready = ->
 
       eventRender: (event, element) ->
         # console.log "Checking '" + event.title + "'" if debugging
+        # console.log "channels: " + filterHiddenChannels
         elementIsVisible = true
 
         alert 'Invalid argument to eventRender(). ' + filterViewLevel + ' is invalid.' if DBGacceptableValues.indexOf(filterViewLevel) < 0
@@ -154,6 +212,7 @@ ready = ->
         for hiddenChannel in filterHiddenChannels
           if hiddenChannel == event.channel
             elementIsVisible = false
+            # console.log 'hide ' + event.title
 
         for hiddenDepartment in filterHiddenDepartments
           if hiddenDepartment == event.department
@@ -179,17 +238,17 @@ ready = ->
         #   # console.log "  Event '" + event.title + "' category is hidden" if debugging
         #   $(element).hide();
 
-      eventOrder: (event1, event2) ->
-        # More about controlling sort: https://github.com/fullcalendar/fullcalendar/issues/2907
-        console.log 'Sort ' + event1.title + ' (' + event1.start + ') and ' + event2.title + ' (' + event1.start + ')'
-        if event1.type == 'event' and event2.type in ['tactic', 'step']
-          return 1
-        if event1.type == 'tactic' and event2.type == 'step'
-          return 1
-        if event1.title > event2.title
-          return 1
-        else
-          return -1
+      # eventOrder: (event1, event2) ->
+      #   # More about controlling sort: https://github.com/fullcalendar/fullcalendar/issues/2907
+      #   console.log 'Sort ' + event1.title + ' (' + event1.start + ') and ' + event2.title + ' (' + event1.start + ')'
+      #   if event1.type == 'event' and event2.type in ['tactic', 'step']
+      #     return 1
+      #   if event1.type == 'tactic' and event2.type == 'step'
+      #     return 1
+      #   if event1.title > event2.title
+      #     return 1
+      #   else
+      #     return -1
 
       eventAfterRender: (event, element, view) ->
         $(element).attr "id", "event-id-" + event.id
@@ -205,10 +264,21 @@ ready = ->
     alert 'Invalid argument to filterViewLevelChanged(). ' + radioButton.value + ' is invalid.' if DBGindexOfValue < 0
 
   filterViewLevel = radioButton.value
+  events = $('#calendar').fullCalendar('clientEvents')
+  for event in events
+    if event.type == 'tactic'
+      if filterViewLevel in ['exec', 'mgr']
+        event.start = moment(event.alternateStart).startOf('day')
+      else
+        event.start = moment(event.realStart).startOf('day')
+
   $('#calendar').fullCalendar 'rerenderEvents'
 
 @filterChannelsChanged = (channelsDropdown) ->
   console.log 'filterChannelsChanged changed ' + $('#channel-select').val() if debugging
+  if loadingPopover
+    console.log 'filterChannelsChanged returning because popover is loading' if debugging
+    return
 
   filterHiddenChannels = []
   $('#channel-select option:not(:selected)').each (i, selected) ->
@@ -219,6 +289,9 @@ ready = ->
 
 @filterDepartmentsChanged = (departmentsDropdown) ->
   console.log 'filterDepartmentsChanged changed ' + $('#department-select').val() if debugging
+  if loadingPopover
+    console.log 'filterDepartmentsChanged returning because popover is loading' if debugging
+    return
 
   filterHiddenDepartments = []
   $('#department-select option:not(:selected)').each (i, selected) ->
