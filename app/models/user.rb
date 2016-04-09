@@ -17,4 +17,24 @@ class User < ApplicationRecord
   has_many :step_comments
   has_many :followed_steps
   has_many :followed_tactics
+
+  def full_name
+    f = ""
+    l = ""
+    f = first_name unless first_name.nil? || first_name == User.default_value_for_empty_name
+    l = last_name unless last_name.nil? || last_name == User.default_value_for_empty_name
+
+    if f == "" && l == ""
+      email
+    else
+      (f.strip + " " + l.strip).strip
+    end
+  end
+
+  private
+    def self.default_value_for_empty_name
+      "tmc name tbd"
+    end
+
+
 end

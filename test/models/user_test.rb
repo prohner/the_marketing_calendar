@@ -17,4 +17,8 @@ class UserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+  test "the full name is constructed properly" do
+    u = User.new(first_name: 'joseph', last_name: 'blow')
+    assert(u.full_name == 'joseph blow', 'Failed to construct full name correctly')
+  end
 end
