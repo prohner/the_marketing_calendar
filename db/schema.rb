@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402041208) do
+ActiveRecord::Schema.define(version: 20160409050928) do
 
   create_table "channels", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "icon"
+    t.integer  "team_id"
   end
 
   create_table "departments", force: :cascade do |t|
@@ -34,6 +35,7 @@ ActiveRecord::Schema.define(version: 20160402041208) do
     t.decimal  "revenue"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "team_id"
   end
 
   create_table "followed_steps", force: :cascade do |t|

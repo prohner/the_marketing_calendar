@@ -10,4 +10,5 @@
 
 class Channel < ApplicationRecord
   has_many :tactics
+  belongs_to :team
 end

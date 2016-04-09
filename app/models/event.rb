@@ -13,4 +13,5 @@
 
 class Event < ApplicationRecord
   has_many :tactics
+  belongs_to :team
 end

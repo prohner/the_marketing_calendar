@@ -1,6 +1,6 @@
 namespace :tmc do
   desc "Load some sample data"
-  task :load => :environment do
+  task :seed => :environment do
     StepComment.delete_all
     FollowedStep.delete_all
     Step.delete_all
@@ -13,15 +13,16 @@ namespace :tmc do
     Tactic.delete_all
     Channel.delete_all
     Event.delete_all
-
-    @em_channel = Channel.create!(title: 'Email', icon: 'icon_email.png')
-    @dm_channel = Channel.create!(title: 'Direct mail', icon: 'icon_direct_mail.gif')
-    @sms_channel = Channel.create!(title: 'SMS', icon: 'icon_sms.png')
-    @web_channel = Channel.create!(title: 'Web', icon: 'icon_web.png')
-    @social_channel = Channel.create!(title: 'Social', icon: 'icon_social.png')
+    Team.delete_all
 
     tmc_team = Team.create!(team_name: 'The Marketing Calendar')
     other_team = Team.create!(team_name: 'NOT The Marketing Calendar')
+
+    @em_channel = Channel.create!(title: 'Email', icon: 'icon_email.png', team: tmc_team)
+    @dm_channel = Channel.create!(title: 'Direct mail', icon: 'icon_direct_mail.gif', team: tmc_team)
+    @sms_channel = Channel.create!(title: 'SMS', icon: 'icon_sms.png', team: tmc_team)
+    @web_channel = Channel.create!(title: 'Web', icon: 'icon_web.png', team: tmc_team)
+    @social_channel = Channel.create!(title: 'Social', icon: 'icon_social.png', team: tmc_team)
 
     @marketing_dept = Department.create!(department_name: 'Marketing', team: tmc_team)
     @it_dept = Department.create!(department_name: 'IT', team: tmc_team)
@@ -37,7 +38,7 @@ namespace :tmc do
     current_month = Date.today.strftime("%m").to_i
     last_day_of_month = Date.new(current_year, current_month, -1).day
 
-    event1 = Event.create!(title: "Major Holiday Event", starts_on: make_date(current_year, current_month, 10), ends_on: make_date(current_year, current_month, 17))
+    event1 = Event.create!(title: "Major Holiday Event", starts_on: make_date(current_year, current_month, 10), ends_on: make_date(current_year, current_month, 17), team: tmc_team)
     create_email( event1, "auto-generate-email-name", current_year, current_month, 10)
     create_email( event1, "auto-generate-email-name", current_year, current_month, 12)
     create_email( event1, "auto-generate-email-name", current_year, current_month, 14)
@@ -54,7 +55,7 @@ namespace :tmc do
     create_social(event1, "auto-generate-social-name",current_year, current_month, 18)
     create_social(event1, "auto-generate-social-name",current_year, current_month, 25)
 
-    event2 = Event.create!(title: "Emailings for Month", starts_on: make_date(current_year, current_month, 1), ends_on: make_date(current_year, current_month, 29))
+    event2 = Event.create!(title: "Emailings for Month", starts_on: make_date(current_year, current_month, 1), ends_on: make_date(current_year, current_month, 29), team: tmc_team)
     create_dm(   event2, "auto-generate-dm-name",    current_year, current_month, 1)
     create_email(event2, "auto-generate-email-name", current_year, current_month, 1)
     create_email(event2, "auto-generate-email-name", current_year, current_month, 3)
