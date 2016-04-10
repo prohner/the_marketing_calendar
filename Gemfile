@@ -60,6 +60,8 @@ gem 'bootstrap', '~> 4.0.0.alpha3'
 
 gem 'select2-rails'
 
+gem 'devise', git: 'git@github.com:plataformatec/devise.git'
+
 source 'https://rails-assets.org' do   ## Indicated in https://github.com/twbs/bootstrap-rubygem
   gem 'rails-assets-tether', '>= 1.1.0'
 end

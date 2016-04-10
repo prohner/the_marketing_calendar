@@ -28,11 +28,11 @@ namespace :tmc do
     @it_dept = Department.create!(department_name: 'IT', team: tmc_team)
     @creative_dept = Department.create!(department_name: 'Creative', team: tmc_team)
 
-    preston = User.create!(email: 'pr@themarketingcalendar.com', first_name: 'Preston', last_name: 'Rohner', department: @marketing_dept)
-    yves = User.create!(email: 'ya@themarketingcalendar.com', first_name: 'Yves', last_name: 'Accad', department: @it_dept)
+    preston = User.create!(email: 'pr@themarketingcalendar.com', first_name: 'Preston', last_name: 'Rohner', department: @marketing_dept, password: 'pr123456', password_confirmation: 'pr123456')
+    yves = User.create!(email: 'ya@themarketingcalendar.com', first_name: 'Yves', last_name: 'Accad', department: @it_dept, password: 'ya123456', password_confirmation: 'ya123456')
     @users = [preston, yves]
-    @users << User.create!(email: 'other1@themarketingcalendar.com', first_name: 'Joe', last_name: 'Swanson', department: @marketing_dept)
-    @users << User.create!(email: 'other1@themarketingcalendar.com', first_name: 'Bob', last_name: 'Johnson', department: @creative_dept)
+    @users << User.create!(email: 'other1@themarketingcalendar.com', first_name: 'Joe', last_name: 'Swanson', department: @marketing_dept, password: 'pr123456', password_confirmation: 'pr123456')
+    @users << User.create!(email: 'other2@themarketingcalendar.com', first_name: 'Bob', last_name: 'Johnson', department: @creative_dept, password: 'pr123456', password_confirmation: 'pr123456')
 
     current_year = Date.today.strftime("%Y").to_i
     current_month = Date.today.strftime("%m").to_i
