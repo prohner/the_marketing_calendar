@@ -196,7 +196,7 @@ ready = ->
       ]
 
       eventRender: (event, element) ->
-        # console.log "Checking '" + event.title + "'" if debugging
+        console.log "Checking '" + event.title + "', starts " + event.start if debugging
         # console.log "channels: " + filterHiddenChannels
         elementIsVisible = true
 

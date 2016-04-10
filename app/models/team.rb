@@ -10,4 +10,5 @@
 
 class Team < ApplicationRecord
   has_many :departments
+  has_many :events
 end
