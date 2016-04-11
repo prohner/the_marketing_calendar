@@ -17,3 +17,11 @@
  *= require select2-bootstrap
  */
 @import "bootstrap";
+
+.alert-notice {
+	@extend .alert-warning;
+}
+
+.alert-alert {
+	@extend .alert-danger;
+}
