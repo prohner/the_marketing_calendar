@@ -15,7 +15,7 @@ ready = ->
   console.log 'executing ready()'
 
   $('#add-calendar-tactic').on 'click', (e) ->
-    presentPopover 'add tactic url', this, { }
+    presentPopover '/tactics/new', $('#calendar-menu'), { }
     event.preventDefault()
 
   $('#add-calendar-step').on 'click', (e) ->
@@ -308,24 +308,27 @@ ready = ->
   $('#calendar').fullCalendar 'rerenderEvents'
 
 presentPopover = (url, sourceObject, event) ->
-  alert url
-  return
-	# thisObject = sourceObject
-	# console.log "presentPopover starting" if debugging
-	# $.get url, (d) ->
-	# 	title = event.title
-  #
-	# 	$(thisObject).popover {
-	# 		title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
-	# 		html: true
-	# 		template: '<div class="popover popover-width-control" style="max-width: 1000px!important; width:600px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
-	# 		content: d
-	# 		placement: 'auto'
-	# 		container: '#calendar'
-	# 	}
-  #
-	# 	$(thisObject).on "show.bs.popover", (e) ->
-	# 		console.log "popover.on.show " if debugging
+  thisObject = sourceObject
+  console.log 'url = ' + url
+  console.log 'sourceObject = ' + sourceObject
+  console.log 'event = ' + event
+  console.log "presentPopover starting" if debugging
+
+  $.get url, (d) ->
+    title = "Editing" #event.title
+    console.log "presentPopover in get: " + sourceObject
+    $(thisObject).on "show.bs.popover", (e) ->
+    	console.log "popover.on.show " if debugging
+    $(thisObject).popover({
+      title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
+      html: true
+      template: '<div class="popover popover-width-control" style="max-width: 1000px!important; width:600px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      content: d
+      placement: 'auto'
+      container: '#calendar'
+    })
+    $(thisObject).show
+
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
