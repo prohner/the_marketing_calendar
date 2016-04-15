@@ -5,3 +5,44 @@
 .fc-week-number {
 	background-color:#f3f3f3;
 }
+
+// Code for the popover forms
+#flash {
+	display:none;
+	color:#0000;
+	background-color:yellow;
+}
+#spinner {
+	display:none;
+}
+
+form .form-group {
+	margin-bottom: 1px;
+}
+.tcm-form-control {
+	width: 60%;
+	padding-left: 4px;
+}
+.event-repetition {
+	background-color:#f6f6f6;
+}
+.form-horizontal .control-group {
+		margin-bottom: 2px;
+}
+.actions {
+	margin-top: 6px;
+	width:160px;
+}
+
+.form-horizontal .control-label {
+	display:inline;
+}
+
+.form-horizontal .control-container {
+	display:inline;
+	clear:both;
+}
+.col-sm-10 {
+	display:inline;
+	float:none;
+}

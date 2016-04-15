@@ -1,1 +1,21 @@
-This is edit_in_popover
+<%= form_for @tactic, :url => url_for(:controller => 'tactics', :action => 'create'), :html => { :class => 'form-horizontal', :role => "form" } do |f| %>
+  <% if @tactic.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@tactic.errors.count, "error") %> prohibited this tactic from being saved:</h2>
+
+      <ul>
+      <% @tactic.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group form-group" id="event_description_group">
+  	<%= f.label :title, :class => "col-sm-2 control-label" %>
+  	<div class="col-sm-10 control-container">
+  		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control", :autofocus => true %>
+  	</div>
+  </div>
+
+<% end %>

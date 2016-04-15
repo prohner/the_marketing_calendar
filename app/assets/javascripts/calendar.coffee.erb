@@ -26,6 +26,10 @@ ready = ->
     $('#calendar-menu-filter').each ->
         # //the 'is' for buttons that trigger popups
         # //the 'has' for icons within a button that triggers a popup
+        if $('.close').is(e.target)
+            popoverThatIsCurrentlyShowing.popover 'hide'
+            popoverThatIsCurrentlyShowing = null
+
         if $('#calendar-menu-filter').is(e.target)
           if popoverThatIsCurrentlyShowing == null
             $(this).popover 'show'
@@ -323,7 +327,7 @@ presentPopover = (url, sourceObject, event) ->
     popover = $(thisObject).popover({
       title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
       html: true
-      template: '<div class="popover popover-width-control" style="max-width: 300px!important; width:600px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      template: '<div class="popover popover-width-control" style="max-width: 545px!important; width:545px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
       content: d
       placement: 'bottom'
       container: '#calendar'
@@ -332,6 +336,7 @@ presentPopover = (url, sourceObject, event) ->
     popover.on "show.bs.popover", (e) ->
     	console.log "popover.on.show " if debugging
     $(thisObject).popover 'show'
+    popoverThatIsCurrentlyShowing = popover
 
 
 $(document).ready(ready);

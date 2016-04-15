@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'calendar/channels'
 
   get 'tactics/new' => 'tactics#new'
+  get 'tactics/create' => 'tactics#create'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
