@@ -15,7 +15,9 @@ ready = ->
   console.log 'executing ready()'
 
   $('#add-calendar-tactic').on 'click', (e) ->
-    presentPopover '/tactics/new', $('#calendar-menu'), { }
+    # Tethering popover to fc-toolbar is less than ideal, button
+    # at least popover is visible.
+    presentPopover '/tactics/new', $('.fc-toolbar'), { }
     event.preventDefault()
 
   $('#add-calendar-step').on 'click', (e) ->
@@ -207,7 +209,7 @@ ready = ->
       ]
 
       eventRender: (event, element) ->
-        console.log "Checking '" + event.title + "', starts " + event.start if debugging
+        # console.log "Checking '" + event.title + "', starts " + event.start if debugging
         # console.log "channels: " + filterHiddenChannels
         elementIsVisible = true
 
@@ -321,14 +323,14 @@ presentPopover = (url, sourceObject, event) ->
     title = "Editing" #event.title
     console.log "presentPopover in get: " + sourceObject
     console.log "thisObject = " + thisObject
-    console.log "d = " + d
+    # console.log "d = " + d
 
     popover = $(thisObject).popover({
       title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
       html: true
       template: '<div class="popover popover-width-control" style="max-width: 545px!important; width:545px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
       content: d
-      placement: 'bottom'
+      placement: "bottom"
       container: '#calendar'
       trigger: 'manual'
     })
