@@ -26,14 +26,14 @@ ready = ->
     $('#calendar-menu-filter').each ->
         # //the 'is' for buttons that trigger popups
         # //the 'has' for icons within a button that triggers a popup
-        if $('.close').is(e.target)
+        if $('#popovercloseid').is(e.target)
             popoverThatIsCurrentlyShowing.popover 'hide'
             popoverThatIsCurrentlyShowing = null
 
         if $('#calendar-menu-filter').is(e.target)
           if popoverThatIsCurrentlyShowing == null
             $(this).popover 'show'
-            popoverThatIsCurrentlyShowing = this
+            popoverThatIsCurrentlyShowing = $(this)
           else
             $(this).popover 'hide'
             popoverThatIsCurrentlyShowing = null
@@ -46,7 +46,7 @@ ready = ->
             $(this).popover('hide');
             popoverThatIsCurrentlyShowing = null
 
-  title = "Filter Settings"
+  title = '<span class="text-info"><strong>Filter Settings</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
   d = "
     <table border=0>
       <tr>
@@ -175,7 +175,6 @@ ready = ->
       # # el.select2('val', '247')
       # x = $('#channel-select option:eq(247)')
       # x.prop('selected', true)
-    console.log ''
     loadingPopover = false
 
 
