@@ -15,6 +15,7 @@ class TacticsController < ApplicationController
   # GET /tactics/new
   def new
     @tactic = Tactic.new
+    @channels = Channel.all
     render :partial => 'edit_in_popover', :layout => false
   end
 

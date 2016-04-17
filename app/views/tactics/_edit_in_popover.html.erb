@@ -1,3 +1,10 @@
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".select2-dropdown").select2();
+  $(".datepicker-field").datepicker({ dateFormat: 'mm-dd-yy' });
+});
+</script>
+
 <%= form_for @tactic, :url => url_for(:controller => 'tactics', :action => 'create'), :html => { :class => 'form-horizontal', :role => "form" } do |f| %>
   <% if @tactic.errors.any? %>
     <div id="error_explanation">
@@ -11,11 +18,25 @@
     </div>
   <% end %>
 
-  <div class="control-group form-group" id="event_description_group">
+  <div class="container control-group form-group" id="tactic_title_group">
   	<%= f.label :title, :class => "col-sm-2 control-label" %>
   	<div class="col-sm-10 control-container">
   		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control", :autofocus => true %>
   	</div>
+  </div>
+
+  <div class="container control-group form-group" id="tactic_channel_group">
+    <%= f.label :channel_id, :class => "col-sm-2 control-label" %>
+  	<div class="col-sm-10 control-container">
+      <%= f.collection_select :channel_id, @channels, :id, :title, {:prompt => "--  Select Channel --"}, {:class => "tcm-form-control select2-dropdown"} %>
+    </div>
+  </div>
+
+  <div class="container control-group form-group" id="event_starts_at_group">
+    <%= f.label :starts_at, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :starts_on, :placeholder => "Tactic start date", :class => "datepicker-field tcm-form-control" %>
+    </div>
   </div>
 
 <% end %>

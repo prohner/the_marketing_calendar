@@ -22,7 +22,16 @@ form .form-group {
 .tcm-form-control {
 	width: 60%;
 	padding-left: 4px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
+
+.tcm-form-control:focus {
+	border: 1px solid darkgray;
+	background-color: #f8fff8;
+}
+
 .event-repetition {
 	background-color:#f6f6f6;
 }
@@ -34,15 +43,15 @@ form .form-group {
 	width:160px;
 }
 
-.form-horizontal .control-label {
-	display:inline;
-}
-
-.form-horizontal .control-container {
-	display:inline;
-	clear:both;
-}
-.col-sm-10 {
-	display:inline;
-	float:none;
-}
+// .form-horizontal .control-label {
+// 	display:inline;
+// }
+//
+// .form-horizontal .control-container {
+// 	// display:inline;
+// 	clear:none;
+// }
+// .col-sm-10 {
+// 	display:inline;
+// 	float:none;
+// }

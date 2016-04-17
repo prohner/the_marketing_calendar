@@ -324,11 +324,12 @@ presentPopover = (url, sourceObject, event) ->
     console.log "presentPopover in get: " + sourceObject
     console.log "thisObject = " + thisObject
     # console.log "d = " + d
+    popoverWidth = 750
 
     popover = $(thisObject).popover({
       title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
       html: true
-      template: '<div class="popover popover-width-control" style="max-width: 545px!important; width:545px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      template: '<div class="popover popover-width-control" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
       content: d
       placement: "bottom"
       container: '#calendar'

@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get 'tactics/new' => 'tactics#new'
   get 'tactics/create' => 'tactics#create'
 
+  resources :steps
+
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # Serve websocket cable requests in-process
