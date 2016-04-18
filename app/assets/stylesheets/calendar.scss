@@ -43,15 +43,6 @@ form .form-group {
 	width:160px;
 }
 
-// .form-horizontal .control-label {
-// 	display:inline;
-// }
-//
-// .form-horizontal .control-container {
-// 	// display:inline;
-// 	clear:none;
-// }
-// .col-sm-10 {
-// 	display:inline;
-// 	float:none;
-// }
+.required-field-is-empty {
+	background-color: #fff8f8;
+}

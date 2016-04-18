@@ -329,7 +329,7 @@ presentPopover = (url, sourceObject, event) ->
     popover = $(thisObject).popover({
       title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
       html: true
-      template: '<div class="popover popover-width-control" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:350px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      template: '<div class="popover popover-width-control" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:220px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
       content: d
       placement: "bottom"
       container: '#calendar'
@@ -339,6 +339,39 @@ presentPopover = (url, sourceObject, event) ->
     	console.log "popover.on.show " if debugging
     $(thisObject).popover 'show'
     popoverThatIsCurrentlyShowing = popover
+
+@required_field_for_tactic_validation = (obj) ->
+  console.log 'required_validation'
+  if obj.required
+    obj.onblur = on_blur_required_text_field
+    $(obj.id).on 'changeData', on_blur_required_text_field
+
+@on_blur_required_text_field = (event) ->
+  console.log 'on_blur_required_text_field'
+  if this.value == ""
+    $(this).addClass('required-field-is-empty')
+  else
+    $(this).removeClass('required-field-is-empty')
+  validate_tactic_form()
+
+@validate_tactic_form = () ->
+  is_valid = true
+  if $('#tactic_title').val() == undefined || $('#tactic_title').val() == ''
+    is_valid = false
+  if $('#tactic_starts_on').val() == undefined || $('#tactic_starts_on').val() == ''
+    is_valid = false
+  if $('#tactic_ends_on').val() == undefined || $('#tactic_ends_on').val() == ''
+    is_valid = false
+  if $('#tactic_channel_id').val() == undefined || $('#tactic_channel_id').val() == ''
+    is_valid = false
+
+  if is_valid
+    $('#form_is_valid').val('yes')
+    $('#submit-button').removeClass('disabled')
+  else
+    $('#form_is_valid').val('no')
+    $('#submit-button').addClass('disabled')
+  console.log '#form_is_valid is now ' + $('#form_is_valid').val()
 
 
 $(document).ready(ready);

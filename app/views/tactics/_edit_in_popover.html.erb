@@ -1,11 +1,31 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $(".select2-dropdown").select2();
-  $(".datepicker-field").datepicker({ dateFormat: 'mm-dd-yy' });
+  $(".datepicker-field").datepicker({
+    dateFormat: 'mm-dd-yy',
+    numberOfMonths: 3,
+    showButtonPanel: true,
+    afterAdjustDate: function() {
+      required_validation(this);
+    }
+
+    });
+  $(".tcm-form-control").each(function(index) {
+    required_field_for_tactic_validation(this);
+  });
+
+  $('#edit-tactic').submit(function() {
+    if ($('#form_is_valid').val() === 'yes') {
+      alert('submitting');
+    } else {
+      alert('NOT valid, NOT submitting');
+    }
+    return false;
+  });
 });
 </script>
 
-<%= form_for @tactic, :url => url_for(:controller => 'tactics', :action => 'create'), :html => { :class => 'form-horizontal', :role => "form" } do |f| %>
+<%= form_for @tactic, :url => url_for(:controller => 'tactics', :action => 'create'), :html => { :id => 'edit-tactic', :class => 'form-horizontal', :role => "form" } do |f| %>
   <% if @tactic.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@tactic.errors.count, "error") %> prohibited this tactic from being saved:</h2>
@@ -17,11 +37,12 @@ $(document).ready(function() {
       </ul>
     </div>
   <% end %>
+  <%= hidden_field_tag :form_is_valid, 'yes' %>
 
   <div class="container control-group form-group" id="tactic_title_group">
   	<%= f.label :title, :class => "col-sm-2 control-label" %>
   	<div class="col-sm-10 control-container">
-  		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control", :autofocus => true %>
+  		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control", :autofocus => true, :required => true %>
   	</div>
   </div>
 
@@ -35,8 +56,24 @@ $(document).ready(function() {
   <div class="container control-group form-group" id="event_starts_at_group">
     <%= f.label :starts_at, :class => "col-sm-2 control-label" %>
     <div class="col-sm-10">
-      <%= f.text_field :starts_on, :placeholder => "Tactic start date", :class => "datepicker-field tcm-form-control" %>
+      <%= f.text_field :starts_on, :placeholder => "Tactic start date", :class => "datepicker-field tcm-form-control", :required => true %>
     </div>
+  </div>
+
+  <div class="container control-group form-group" id="event_starts_at_group">
+    <%= f.label :ends_on, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :ends_on, :placeholder => "Tactic end date", :class => "datepicker-field tcm-form-control", :required => true %>
+    </div>
+  </div>
+
+  <div class="actions inline col-sm-12">
+    <%= f.submit :id => "submit-button", :style => "float:right;", :class => "btn btn-xs btn-primary disabled" %>
+  	<% unless @tactic.new_record? %>
+  		<label for="delete-button" class="delete-event-button-proxy" id="delete-event-button-proxy" style="float:right;">Delete this event</label>
+  	<% end %>
+    <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
+  	<span id="flash">Your changes have been saved!</span>
   </div>
 
 <% end %>
