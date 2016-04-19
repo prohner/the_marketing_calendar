@@ -347,8 +347,8 @@ presentPopover = (url, sourceObject, event) ->
     $(obj.id).on 'changeData', on_blur_required_text_field
 
 @on_blur_required_text_field = (event) ->
-  console.log 'on_blur_required_text_field'
-  if this.value == ""
+  console.log 'on_blur_required_text_field (' + $(this).val() + ')'
+  if $(this).val() == ""
     $(this).addClass('required-field-is-empty')
   else
     $(this).removeClass('required-field-is-empty')

@@ -5,12 +5,30 @@ $(document).ready(function() {
     dateFormat: 'mm-dd-yy',
     numberOfMonths: 3,
     showButtonPanel: true,
-    afterAdjustDate: function() {
-      required_validation(this);
+    onSelect: function(dateText) {
+        $(this).val(dateText);
+        console.log("        onSelect 2: " + $(this).val());
+        if ($(this).val() == "") {
+          $(this).addClass('required-field-is-empty');
+        } else {
+          $(this).removeClass('required-field-is-empty');
+        }
+        validate_tactic_form();
     }
+    // afterAdjustDate: function(selectedDate) {
+    //   console.log("afterAdjustDate: " + selectedDate);
+    //   on_blur_required_text_field(this);
+    // },
+    // onClose: function(selectedDate) {
+    //   console.log("onClose 1: " + selectedDate);
+    //   $(this).val(selectedDate);
+    //   console.log("onClose 2: " + $(this).val());
+    //   on_blur_required_text_field(this);
+    //   $("#ends_on").datepicker( "option", "minDate", selectedDate );
+    // }
 
     });
-  $(".tcm-form-control").each(function(index) {
+  $(".tcm-required-field").each(function(index) {
     required_field_for_tactic_validation(this);
   });
 
@@ -42,14 +60,14 @@ $(document).ready(function() {
   <div class="container control-group form-group" id="tactic_title_group">
   	<%= f.label :title, :class => "col-sm-2 control-label" %>
   	<div class="col-sm-10 control-container">
-  		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control", :autofocus => true, :required => true %>
+  		<%= f.text_field :title, :placeholder => "Title or description of new tactic", :class => "tcm-form-control tcm-required-field", :autofocus => true, :required => true %>
   	</div>
   </div>
 
   <div class="container control-group form-group" id="tactic_channel_group">
     <%= f.label :channel_id, :class => "col-sm-2 control-label" %>
   	<div class="col-sm-10 control-container">
-      <%= f.collection_select :channel_id, @channels, :id, :title, {:prompt => "--  Select Channel --"}, {:class => "tcm-form-control select2-dropdown"} %>
+      <%= f.collection_select :channel_id, @channels, :id, :title, {:prompt => "--  Select Channel --"}, {:class => "tcm-form-control select2-dropdown tcm-required-field"} %>
     </div>
   </div>
 
