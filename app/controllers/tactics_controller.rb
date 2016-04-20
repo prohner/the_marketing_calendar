@@ -27,12 +27,14 @@ class TacticsController < ApplicationController
   # POST /tactics.json
   def create
     @tactic = Tactic.new(tactic_params)
+    @tactic.event = current_user.department.team.events.first
 
     respond_to do |format|
       if @tactic.save
         format.html { redirect_to @tactic, notice: 'Tactic was successfully created.' }
         format.json { render :show, status: :created, location: @tactic }
       else
+        puts @tactic.errors.full_messages
         format.html { render :new }
         format.json { render json: @tactic.errors, status: :unprocessable_entity }
       end
@@ -73,4 +75,9 @@ class TacticsController < ApplicationController
     def tactic_params
       params.fetch(:tactic, {})
     end
+
+    def tactic_params
+      params.require(:tactic).permit(:title, :channel_id, :starts_on, :ends_on)
+    end
+
 end

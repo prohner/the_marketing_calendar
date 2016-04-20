@@ -34,7 +34,18 @@ $(document).ready(function() {
 
   $('#edit-tactic').submit(function() {
     if ($('#form_is_valid').val() === 'yes') {
-      alert('submitting');
+      $("#spinner").show();
+      $.ajax({
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        type: "POST",
+        dataType: "JSON"
+      }).success(function(json) {
+        $("#spinner").hide();
+        $("#flash").text("This event has been deleted.");
+        $("#flash").show();
+        $("#flash").effect("fade", {}, 3500);
+      });
     } else {
       alert('NOT valid, NOT submitting');
     }
@@ -86,6 +97,11 @@ $(document).ready(function() {
   </div>
 
   <div class="actions inline col-sm-12">
+    <span id="spinner">
+      <%= image_tag 'animated_spinner.gif', alt: "Processing...", size: "45" %>
+    </span>
+    <span id="flash">Your changes have been saved!</span>
+
     <%= f.submit :id => "submit-button", :style => "float:right;", :class => "btn btn-xs btn-primary disabled" %>
   	<% unless @tactic.new_record? %>
   		<label for="delete-button" class="delete-event-button-proxy" id="delete-event-button-proxy" style="float:right;">Delete this event</label>

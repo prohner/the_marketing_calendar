@@ -4,9 +4,7 @@ Rails.application.routes.draw do
   get 'calendar/events'
   get 'calendar/channels'
 
-  get 'tactics/new' => 'tactics#new'
-  get 'tactics/create' => 'tactics#create'
-
+  resources :tactics
   resources :steps
 
 
