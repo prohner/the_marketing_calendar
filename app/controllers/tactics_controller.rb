@@ -1,5 +1,6 @@
 class TacticsController < ApplicationController
   before_action :set_tactic, only: [:show, :edit, :update, :destroy]
+  ActionController::Parameters.permit_all_parameters = true
 
   # GET /tactics
   # GET /tactics.json
@@ -27,7 +28,13 @@ class TacticsController < ApplicationController
   # POST /tactics.json
   def create
     @tactic = Tactic.new(tactic_params)
+    puts tactic_params.inspect
     @tactic.event = current_user.department.team.events.first
+    @tactic.starts_on = tactic_params.starts_on
+    @tactic.ends_on = tactic_params.ends_on
+
+    puts tactic_params.inspect
+    puts @tactic.inspect
 
     respond_to do |format|
       if @tactic.save
