@@ -1,6 +1,5 @@
 class TacticsController < ApplicationController
   before_action :set_tactic, only: [:show, :edit, :update, :destroy]
-  ActionController::Parameters.permit_all_parameters = true
 
   # GET /tactics
   # GET /tactics.json
@@ -28,19 +27,25 @@ class TacticsController < ApplicationController
   # POST /tactics.json
   def create
     @tactic = Tactic.new(tactic_params)
-    puts tactic_params.inspect
+    # puts the_params.inspect
     @tactic.event = current_user.department.team.events.first
-    @tactic.starts_on = tactic_params.starts_on
-    @tactic.ends_on = tactic_params.ends_on
-
-    puts tactic_params.inspect
-    puts @tactic.inspect
+    # puts the_params.title
+    # @tactic.starts_on = "12/1/2016"
+    # puts the_params.starts_on
+    # puts the_params.ends_on
+    # # @tactic.starts_on = the_params.starts_on
+    # @tactic.ends_on = the_params.ends_on
+    #
+    # puts the_params.inspect
+    # puts @tactic.inspect
 
     respond_to do |format|
       if @tactic.save
+        puts "Saved"
         format.html { redirect_to @tactic, notice: 'Tactic was successfully created.' }
         format.json { render :show, status: :created, location: @tactic }
       else
+        puts "ERROR"
         puts @tactic.errors.full_messages
         format.html { render :new }
         format.json { render json: @tactic.errors, status: :unprocessable_entity }
@@ -80,11 +85,7 @@ class TacticsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tactic_params
-      params.fetch(:tactic, {})
-    end
-
-    def tactic_params
-      params.require(:tactic).permit(:title, :channel_id, :starts_on, :ends_on)
+      params.require(:tactic).permit(:title, :event_id, :channel_id, :starts_on, :ends_on, :revenue)
     end
 
 end
