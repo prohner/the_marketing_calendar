@@ -42,15 +42,24 @@ $(document).ready(function() {
         dataType: "JSON"
       }).success(function(json) {
         $("#spinner").hide();
-        $("#flash").text("This event has been deleted.");
+        $("#flash").text("Created tactic!");
         $("#flash").show();
         $("#flash").effect("fade", {}, 3500);
+        setTimeout(function() { hideThePopoverThatContainsMe(); }, 2000 );
       });
     } else {
       alert('NOT valid, NOT submitting');
     }
     return false;
   });
+
+  function hideThePopoverThatContainsMe() {
+    console.log("attempting to hide popover");
+    var id = "#" + $('#name_of_popover_that_contains_me').val();
+    var x = $(id);
+    console.log('mmm bueno (' + id + ') ' + x);
+    x.popover('destroy');
+  }
 });
 </script>
 
@@ -67,6 +76,7 @@ $(document).ready(function() {
     </div>
   <% end %>
   <%= hidden_field_tag :form_is_valid, 'yes' %>
+  <%= hidden_field_tag :name_of_popover_that_contains_me %>
 
   <div class="container control-group form-group" id="tactic_title_group">
   	<%= f.label :title, :class => "col-sm-2 control-label" %>

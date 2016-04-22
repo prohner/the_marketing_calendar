@@ -26,18 +26,22 @@ class TacticsController < ApplicationController
   # POST /tactics
   # POST /tactics.json
   def create
-    @tactic = Tactic.new(tactic_params)
-    # puts the_params.inspect
+    parms = tactic_params
+    @tactic = Tactic.new(parms)
     @tactic.event = current_user.department.team.events.first
-    # puts the_params.title
-    # @tactic.starts_on = "12/1/2016"
-    # puts the_params.starts_on
-    # puts the_params.ends_on
-    # # @tactic.starts_on = the_params.starts_on
-    # @tactic.ends_on = the_params.ends_on
-    #
-    # puts the_params.inspect
-    # puts @tactic.inspect
+
+    # puts "methods:"
+    # puts parms.methods
+    puts "parms:"
+    puts parms.inspect
+    puts parms[:starts_on]
+    @tactic.starts_on = parms[:starts_on]
+    @tactic.ends_on = parms[:ends_on]
+    @tactic.assign_attributes(starts_on: parms[:starts_on])
+    @tactic.assign_attributes(ends_on: parms[:ends_on])
+
+    puts "@tactic"
+    puts @tactic.inspect
 
     respond_to do |format|
       if @tactic.save

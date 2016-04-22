@@ -335,6 +335,9 @@ presentPopover = (url, sourceObject, event) ->
       container: '#calendar'
       trigger: 'manual'
     })
+
+    $("#name_of_popover_that_contains_me").val("add-calendar-event")
+
     popover.on "show.bs.popover", (e) ->
     	console.log "popover.on.show " if debugging
     $(thisObject).popover 'show'
