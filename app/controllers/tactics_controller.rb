@@ -29,19 +29,8 @@ class TacticsController < ApplicationController
     parms = tactic_params
     @tactic = Tactic.new(parms)
     @tactic.event = current_user.department.team.events.first
-
-    # puts "methods:"
-    # puts parms.methods
-    puts "parms:"
-    puts parms.inspect
-    puts parms[:starts_on]
-    @tactic.starts_on = parms[:starts_on]
-    @tactic.ends_on = parms[:ends_on]
-    @tactic.assign_attributes(starts_on: parms[:starts_on])
-    @tactic.assign_attributes(ends_on: parms[:ends_on])
-
-    puts "@tactic"
-    puts @tactic.inspect
+    puts "parms #{parms.inspect}"
+    puts "@tactic #{@tactic.inspect}"
 
     respond_to do |format|
       if @tactic.save

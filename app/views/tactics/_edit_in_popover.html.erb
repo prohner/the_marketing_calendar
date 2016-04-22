@@ -2,7 +2,7 @@
 $(document).ready(function() {
   $(".select2-dropdown").select2();
   $(".datepicker-field").datepicker({
-    dateFormat: 'mm-dd-yy',
+    dateFormat: 'yy/mm/dd',
     numberOfMonths: 3,
     showButtonPanel: true,
     onSelect: function(dateText) {
@@ -92,14 +92,14 @@ $(document).ready(function() {
     </div>
   </div>
 
-  <div class="container control-group form-group" id="event_starts_at_group">
+  <div class="container control-group form-group" id="event_starts_on_group">
     <%= f.label :starts_on, :class => "col-sm-2 control-label" %>
     <div class="col-sm-10">
       <%= f.text_field :starts_on, :placeholder => "Tactic start date", :class => "datepicker-field tcm-form-control", :required => true %>
     </div>
   </div>
 
-  <div class="container control-group form-group" id="event_starts_at_group">
+  <div class="container control-group form-group" id="event_ends_on_group">
     <%= f.label :ends_on, :class => "col-sm-2 control-label" %>
     <div class="col-sm-10">
       <%= f.text_field :ends_on, :placeholder => "Tactic end date", :class => "datepicker-field tcm-form-control", :required => true %>
