@@ -29,12 +29,9 @@ class TacticsController < ApplicationController
     parms = tactic_params
     @tactic = Tactic.new(parms)
     @tactic.event = current_user.department.team.events.first
-    puts "parms #{parms.inspect}"
-    puts "@tactic #{@tactic.inspect}"
 
     respond_to do |format|
       if @tactic.save
-        puts "Saved"
         format.html { redirect_to @tactic, notice: 'Tactic was successfully created.' }
         format.json { render :show, status: :created, location: @tactic }
       else

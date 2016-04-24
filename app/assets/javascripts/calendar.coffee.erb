@@ -329,17 +329,20 @@ presentPopover = (url, sourceObject, event) ->
     popover = $(thisObject).popover({
       title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
       html: true
-      template: '<div class="popover popover-width-control" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:220px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      template: '<div class="popover popover-width-control add-calendar-event" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:220px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
       content: d
       placement: "bottom"
       container: '#calendar'
       trigger: 'manual'
     })
 
-    $("#name_of_popover_that_contains_me").val("add-calendar-event")
-
     popover.on "show.bs.popover", (e) ->
     	console.log "popover.on.show " if debugging
+
+    popover.on "shown.bs.popover", (e) ->
+    	console.log "popover.on.shown " if debugging
+    	$("#name_of_popover_that_contains_me").val("add-calendar-event")
+
     $(thisObject).popover 'show'
     popoverThatIsCurrentlyShowing = popover
 
