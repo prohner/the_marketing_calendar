@@ -9,8 +9,10 @@
 #  revenue    :decimal(, )
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  team_id    :integer
 #
 
 class Event < ApplicationRecord
   has_many :tactics
+  belongs_to :team
 end

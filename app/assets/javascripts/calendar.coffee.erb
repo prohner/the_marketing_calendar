@@ -14,14 +14,28 @@ DBGacceptableValues = ['exec', 'mgr', 'oper']
 ready = ->
   console.log 'executing ready()'
 
+  $('#add-calendar-tactic').on 'click', (e) ->
+    # Tethering popover to fc-toolbar is less than ideal, button
+    # at least popover is visible.
+    presentPopover '/tactics/new', $('.fc-toolbar'), { }
+    event.preventDefault()
+
+  $('#add-calendar-step').on 'click', (e) ->
+    presentPopover 'add step url', this, { }
+    event.preventDefault()
+
   $('body').on 'click', (e) ->
     $('#calendar-menu-filter').each ->
         # //the 'is' for buttons that trigger popups
         # //the 'has' for icons within a button that triggers a popup
+        if $('#popovercloseid').is(e.target)
+            popoverThatIsCurrentlyShowing.popover 'hide'
+            popoverThatIsCurrentlyShowing = null
+
         if $('#calendar-menu-filter').is(e.target)
           if popoverThatIsCurrentlyShowing == null
             $(this).popover 'show'
-            popoverThatIsCurrentlyShowing = this
+            popoverThatIsCurrentlyShowing = $(this)
           else
             $(this).popover 'hide'
             popoverThatIsCurrentlyShowing = null
@@ -34,7 +48,7 @@ ready = ->
             $(this).popover('hide');
             popoverThatIsCurrentlyShowing = null
 
-  title = "Filter Settings"
+  title = '<span class="text-info"><strong>Filter Settings</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
   d = "
     <table border=0>
       <tr>
@@ -163,7 +177,6 @@ ready = ->
       # # el.select2('val', '247')
       # x = $('#channel-select option:eq(247)')
       # x.prop('selected', true)
-    console.log ''
     loadingPopover = false
 
 
@@ -196,7 +209,7 @@ ready = ->
       ]
 
       eventRender: (event, element) ->
-        # console.log "Checking '" + event.title + "'" if debugging
+        # console.log "Checking '" + event.title + "', starts " + event.start if debugging
         # console.log "channels: " + filterHiddenChannels
         elementIsVisible = true
 
@@ -298,6 +311,74 @@ ready = ->
     filterHiddenDepartments.push parseInt(selected.id)
 
   $('#calendar').fullCalendar 'rerenderEvents'
+
+presentPopover = (url, sourceObject, event) ->
+  thisObject = sourceObject
+  console.log 'url = ' + url
+  console.log 'sourceObject = ' + sourceObject
+  console.log 'event = ' + event
+  console.log "presentPopover starting" if debugging
+
+  $.get url, (d) ->
+    title = "Editing" #event.title
+    console.log "presentPopover in get: " + sourceObject
+    console.log "thisObject = " + thisObject
+    # console.log "d = " + d
+    popoverWidth = 750
+
+    popover = $(thisObject).popover({
+      title: '<span class="text-info"><strong>' + title + '</strong></span>' + '<button type="button" id="popovercloseid" class="close" onclick="return false;">&times;</button>'
+      html: true
+      template: '<div class="popover popover-width-control add-calendar-event" style="max-width:' + popoverWidth + 'px!important; width:' + popoverWidth + 'px; height:220px;"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+      content: d
+      placement: "bottom"
+      container: '#calendar'
+      trigger: 'manual'
+    })
+
+    popover.on "show.bs.popover", (e) ->
+    	console.log "popover.on.show " if debugging
+
+    popover.on "shown.bs.popover", (e) ->
+    	console.log "popover.on.shown " if debugging
+    	$("#name_of_popover_that_contains_me").val("add-calendar-event")
+
+    $(thisObject).popover 'show'
+    popoverThatIsCurrentlyShowing = popover
+
+@required_field_for_tactic_validation = (obj) ->
+  console.log 'required_validation'
+  if obj.required
+    obj.onblur = on_blur_required_text_field
+    $(obj.id).on 'changeData', on_blur_required_text_field
+
+@on_blur_required_text_field = (event) ->
+  console.log 'on_blur_required_text_field (' + $(this).val() + ')'
+  if $(this).val() == ""
+    $(this).addClass('required-field-is-empty')
+  else
+    $(this).removeClass('required-field-is-empty')
+  validate_tactic_form()
+
+@validate_tactic_form = () ->
+  is_valid = true
+  if $('#tactic_title').val() == undefined || $('#tactic_title').val() == ''
+    is_valid = false
+  if $('#tactic_starts_on').val() == undefined || $('#tactic_starts_on').val() == ''
+    is_valid = false
+  if $('#tactic_ends_on').val() == undefined || $('#tactic_ends_on').val() == ''
+    is_valid = false
+  if $('#tactic_channel_id').val() == undefined || $('#tactic_channel_id').val() == ''
+    is_valid = false
+
+  if is_valid
+    $('#form_is_valid').val('yes')
+    $('#submit-button').removeClass('disabled')
+  else
+    $('#form_is_valid').val('no')
+    $('#submit-button').addClass('disabled')
+  console.log '#form_is_valid is now ' + $('#form_is_valid').val()
+
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

@@ -1,3 +1,48 @@
 // Place all the styles related to the Calendar controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.fc-week-number {
+	background-color:#f3f3f3;
+}
+
+// Code for the popover forms
+#flash {
+	display:none;
+	color:#0000;
+	background-color:yellow;
+}
+#spinner {
+	display:none;
+}
+
+form .form-group {
+	margin-bottom: 1px;
+}
+.tcm-form-control {
+	width: 60%;
+	padding-left: 4px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.tcm-form-control:focus {
+	border: 1px solid darkgray;
+	background-color: #f8fff8;
+}
+
+.event-repetition {
+	background-color:#f6f6f6;
+}
+.form-horizontal .control-group {
+		margin-bottom: 2px;
+}
+.actions {
+	margin-top: 6px;
+	width:160px;
+}
+
+.required-field-is-empty {
+	background-color: #fff8f8;
+}

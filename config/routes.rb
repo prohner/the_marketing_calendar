@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'calendar/index'
   get 'calendar/events'
   get 'calendar/channels'
+
+  resources :tactics
+  resources :steps
+
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

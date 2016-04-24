@@ -15,5 +15,14 @@
  *= require_self
  *= require select2
  *= require select2-bootstrap
+ *= require jquery-ui
  */
 @import "bootstrap";
+
+.alert-notice {
+	@extend .alert-warning;
+}
+
+.alert-alert {
+	@extend .alert-danger;
+}

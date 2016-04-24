@@ -1,3 +1,14 @@
+GIT
+  remote: git@github.com:plataformatec/devise.git
+  revision: b397d33246ae3dbc725f681a3f718a20d34313af
+  specs:
+    devise (4.0.0.rc2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 5.1)
+      responders
+      warden (~> 1.2.3)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -45,6 +56,7 @@ GEM
     arel (7.0.0)
     autoprefixer-rails (6.3.3.1)
       execjs
+    bcrypt (3.1.11)
     bootstrap (4.0.0.alpha3)
       autoprefixer-rails (>= 6.0.3)
       sass (>= 3.4.19)
@@ -114,6 +126,7 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    orm_adapter (0.5.0)
     puma (3.1.0)
     rack (2.0.0.alpha)
       json
@@ -156,6 +169,8 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     redis (3.2.2)
+    responders (2.1.2)
+      railties (>= 4.2.0, < 5.1)
     rouge (1.10.1)
     ruby-graphviz (1.2.2)
     safe_yaml (1.0.4)
@@ -187,6 +202,8 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    warden (1.2.6)
+      rack (>= 1.0)
     web-console (3.1.1)
       activemodel (>= 4.2)
       debug_inspector
@@ -203,10 +220,12 @@ DEPENDENCIES
   bootstrap (~> 4.0.0.alpha3)
   byebug
   coffee-rails (~> 4.1.0)
+  devise!
   fullcalendar-rails
   jbuilder (~> 2.0)
   jekyll (= 3.1.2)
   jquery-rails
+  jquery-ui-rails
   momentjs-rails
   puma
   rails (>= 5.0.0.beta2, < 5.1)
